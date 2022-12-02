@@ -1,5 +1,3 @@
-# Use powerline
-#USE_POWERLINE="true"
 # Source manjaro-zsh-configuration
 if [[ -e /usr/share/zsh/manjaro-zsh-config ]]; then
   source /usr/share/zsh/manjaro-zsh-config
@@ -148,9 +146,13 @@ alias gm=/usr/bin/gm
 alias vim=nvim
 #alias ls='exa --icons --group-directories-first'
 alias ls='lsd --hyperlink=auto -A --group-directories-first'
+alias open='handlr open'
+alias o=open
+alias sshkitty='kitty +kitten ssh'
+alias cat=bat
 
 PATH="$PATH:/home/horo/Applications:/home/horo/.cache/yay/distrobox/pkg/distrobox/usr/bin"
-alias cat=bat
 
 eval "$(starship init zsh)"
 
+export PATH=$HOME/horoScripts:$PATH
