@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+
+# ask for sudo
+sudo -v
+
+# /etc/pacman.conf
+# I would like Color:
+sudo sed -i 's/^#Color/Color/' /etc/pacman.conf
