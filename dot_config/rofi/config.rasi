@@ -3,5 +3,6 @@
 @theme "/usr/share/rofi/themes/Arc-Dark.rasi"
 configuration {
  modi: "window,drun,ssh,combi";
+ font: "jetbrainsMono Nerd Font 13";
  combi-modi: "window,drun,ssh";
 }
