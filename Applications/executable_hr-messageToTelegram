@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+# parse --verbose and -v flags
+VERBOSE=false
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -v|--verbose)
+            VERBOSE=true
+            shift
+            ;;
+        *)
+            break
+            ;;
+    esac
+done
+
+path="$HOME/Downloads"
+input=`fd '\.wav$' $path --absolute-path --max-depth=1 --changed-within=10min --max-results=1`
+oldmsgs=$path/oldmessages
+output=$oldmsgs/current_message.ogg
+
+# if verbose
+if [[ "$VERBOSE" = true ]]; then
+    echo "Path: $path"
+    echo "Old messages: $oldmsgs"
+    echo "Input: $input"
+    echo "Output: $output"
+fi
+
+# if no input
+if [[ -z "$input" ]]; then
+    echo "!!! No new messages (max 5min) !!!"
+    exit 1
+fi
+
+#ffmpeg -i $input -acodec libopus message.ogg -y && mv $input $path/oldmessages/`date +%d-%m-%Y_%H-%M-%S`.wav
+ffmpeg -i "$input" -acodec libopus $output -y > /dev/null 2>&1 && \
+    (echo "Converted $input to $output" && \
+    mv "$input" $oldmsgs/`date +%d-%m-%Y_%H-%M-%S`.wav && \
+    echo copying audio file to clippboard && \
+    echo "file://$output" | xclip -i -selection clipboard -t text/uri-list) || \
+    echo "!!! Failed to convert $input to $output !!!"
