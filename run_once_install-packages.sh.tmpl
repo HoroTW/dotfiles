@@ -1,0 +1,59 @@
+#!/bin/sh
+# These are packages I want on all my machines
+
+
+#!/bin/sh
+
+# package list with package name for arch, debian
+# arch, debian
+packages="
+    fd,Idky\
+    ripgrep,Idky\
+    ripgrep-all,Idky\
+    neovim,Idky\
+    bat,Idky\
+    lsd,Idky\
+    broot,Idky\
+"
+
+platforms="arch,debian"
+
+
+{{ if eq .chezmoi.osRelease.idLike "arch" -}}
+platform="arch"
+{{ else if eq .chezmoi.osRelease.idLike "debian" -}}
+# This could be for another OS
+# I can check the data with `chezmoi data`
+platform="debian"
+{{ end -}}
+
+
+selected_packages=""
+
+# ensure platform is set and supported
+if [ -z "$(echo $platforms | grep $platform)" ]; then
+    echo "!! Platform $platform is not one of the supported platforms: $platforms"
+    exit 1
+fi
+
+
+for pkg in $packages; do
+    if [ "$platform" = "arch" ]; then
+        pkg=$(echo $pkg | cut -d, -f1)
+    elif [ "$platform" = "debian" ]; then
+        pkg=$(echo $pkg | cut -d, -f2)
+    fi
+    selected_packages="$selected_packages $pkg"
+done
+
+if [ "$platform" = "arch" ]; then
+    echo "Syncing packages for arch"
+    sudo pacman -Sy
+    echo "going to do: sudo pacman -S $selected_packages --noconfirm --needed"
+    sudo pacman -S $selected_packages --noconfirm --needed
+elif [ "$platform" = "debian" ]; then
+    echo "Syncing packages for debian"
+    sudo apt-get update
+    echo "going to do: sudo apt-get install $selected_packages --noconfirm --assume-yes --fix-missing"
+    sudo apt-get install $selected_packages --noconfirm --assume-yes --fix-missing
+fi
