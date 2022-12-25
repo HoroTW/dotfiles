@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+timeout 3 kquitapp5 plasmashell || killall plasmashell && kstart5 plasmashell &
+

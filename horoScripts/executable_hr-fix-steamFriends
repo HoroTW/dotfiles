@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+echo killing steam web helper...
+pkill steamwebhelper
+echo done 

@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+cd $SCRIPT_DIR
+
+SEL=$(ls .screenlayout/ | rofi -dmenu -p "Monitor Setup:" -no-custom -selected-row 1 -i) \
+&& .screenlayout/"$SEL" \
+&& .screenlayout/"$SEL"
+
+# Execute it twice because if the screen was off xrandr can get confused

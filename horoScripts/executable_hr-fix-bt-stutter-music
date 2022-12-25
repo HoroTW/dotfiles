@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+# pactl list | grep -Pzo '.*bluez_card(.*\n)*'
+# find the Name and the output port name
+
+# use the command with infilled values and watch out its micro not milliseconds
+# pactl set-port-latency-offset <NAME> <PORT> <BUFFER_SIZE_MICROSECONDS>
+# half a sec
+pactl set-port-latency-offset bluez_card.7C_96_D2_62_FB_3F headset-output 1000000
+
+sleep 1
+# finally restart the BT Service
+systemctl restart bluetooth
+

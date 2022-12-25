@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+fd --type f -HI --regex  . ~ | rofi -monitor -5 -keep-right -dmenu -i -p SEARCH -multi-select | xargs -I {} xdg-open {}
+
