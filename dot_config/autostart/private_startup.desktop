@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=startup
+GenericName=A descriptive name
+Comment=Some description about your script
+Exec=/home/horo/horoScripts/startup
+Terminal=false
+Type=Application
+X-GNOME-Autostart-enabled=true
+X-KDE-AutostartScript=true
