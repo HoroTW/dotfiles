@@ -2,7 +2,7 @@
 
 curl --request POST \
   --url https://ass.horotw.com/api/services/switch/turn_on \
-  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI5YTRhMjVmMTVlYTk0MDY5ODY5ODk3NjliMjU2ODU4ZSIsImlhdCI6MTY2ODg2MzU2OSwiZXhwIjoxOTg0MjIzNTY5fQ.I7WsLkpaNNoiNSzCZo402DWIMk7Z47tVjrN-dlqItB8' \
+  --header 'Authorization: Bearer {{ keepassxcAttribute "hass - homeassistant" "bearer-token" }}' \
   --header 'Content-Type: application/json' \
   --data '{
 	"entity_id": "switch.tasmota_tv"
