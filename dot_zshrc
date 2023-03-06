@@ -160,6 +160,8 @@ alias cat=bat
 
 PATH="$PATH:/home/horo/Applications:/home/horo/.cache/yay/distrobox/pkg/distrobox/usr/bin"
 
+export QT_QPA_PLATFORMTHEME='gnome'
+
 eval "$(starship init zsh)"
 
 export PATH=$HOME/horoScripts:$PATH
