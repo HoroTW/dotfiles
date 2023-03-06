@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
 
 systemctl --user restart pipewire-pulse
+systemctl --user restart pipewire.service 
+
