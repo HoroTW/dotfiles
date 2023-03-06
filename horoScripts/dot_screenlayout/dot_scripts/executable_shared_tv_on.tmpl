@@ -1,9 +1,9 @@
 #!/bin/sh
 
-curl --request POST \
+timeout 2 curl --request POST \
   --url https://ass.horotw.com/api/services/switch/turn_on \
   --header 'Authorization: Bearer {{ keepassxcAttribute "hass - homeassistant" "Aurora Token" }}' \
   --header 'Content-Type: application/json' \
   --data '{
-	"entity_id": "switch.tasmota_tv"
+	"entity_id": "switch.living_room_tv"
 }'
