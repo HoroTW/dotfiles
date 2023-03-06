@@ -3,7 +3,7 @@
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 cd $SCRIPT_DIR
 
-SEL=$(ls .screenlayout/ | rofi -dmenu -p "Monitor Setup:" -no-custom -selected-row 1 -i) \
+SEL=$(ls .screenlayout/ | rofi -dmenu -p "Monitor Setup" -no-custom -selected-row 2 -i) \
 && .screenlayout/"$SEL" \
 && .screenlayout/"$SEL"
 

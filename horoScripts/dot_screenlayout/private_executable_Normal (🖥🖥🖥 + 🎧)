@@ -1,0 +1,16 @@
+#!/bin/sh
+
+/home/horo/horoScripts/.screenlayout/.scripts/shared_tv_off
+
+xrandr \
+--output HDMI-0 --off \
+--output DP-0 --primary --mode 2560x1440 --pos 1920x0 --rotate normal --refresh 120 --brightness 1 \
+--output DP-1 --off \
+--output DP-2 --off \
+--output DP-3 --mode 1920x1080 --pos 4480x308 --rotate normal --refresh 60 --gamma 1.32:1.25:1.25 --brightness 1 \
+--output DP-4 --off \
+--output DP-5 --mode 1920x1080 --pos 0x180 --rotate normal --refresh 60 --gamma 1.25:1.3:1.3 --brightness 1
+# test with https://www.testufo.com/framerates-text#pps=240&count=1 # see how it does not work correctly - thats what my eyes see too...
+
+sleep 0
+pactl set-default-sink $(pactl list sinks |& rg --multiline  "Sink #(.*)\n.*\n.*\n.*CMI8788 \[Oxygen HD Audio\] \(CMI8786 \(Xonar DGX\)\) Pro$" -o -r '$1')
