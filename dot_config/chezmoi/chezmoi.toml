@@ -1,6 +1,6 @@
 [edit]
     command = "code"
-    args = ["--wait"]
+    args = ["--wait", "--new-window"]
 [merge]
     command = "code"
     args = ["--wait", "--new-window", "--diff", "{{ .Source }}", "{{ .Destination }}"]
