@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+openrgb --device "Crucial DRAM" --mode "static" --brightness 0 --color 000000
+
