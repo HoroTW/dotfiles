@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+echo Changing default terminal to kitty
+gsettings set org.cinnamon.desktop.default-applications.terminal exec gnome-shell
+
+echo Done initializing gnome 
+
