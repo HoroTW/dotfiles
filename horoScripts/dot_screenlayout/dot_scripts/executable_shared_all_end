@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+# ensure microphone volume is set to the base level (41350) so no additional
+# boost is applied - on my mic it's 41350 out of 65536 which is rughly 63%
+# find yours with `pactl list sources` and look for "Base Volume:"
+# after changing to the pro profile I can set it to 100% which is easier
+pactl set-source-volume @DEFAULT_SOURCE@ 100%

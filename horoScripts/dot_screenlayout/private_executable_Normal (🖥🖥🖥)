@@ -1,4 +1,5 @@
 #!/bin/sh
+/home/horo/horoScripts/.screenlayout/.scripts/shared_all_start
 
 /home/horo/horoScripts/.screenlayout/.scripts/shared_tv_off
 
@@ -12,5 +13,6 @@ xrandr \
 --output DP-5 --mode 1920x1080 --pos 0x180 --rotate normal --refresh 60 --gamma 1.25:1.3:1.3 --brightness 1
 # test with https://www.testufo.com/framerates-text#pps=240&count=1 # see how it does not work correctly - thats what my eyes see too...
 
-sleep 0
-pactl set-default-sink $(pactl list sinks |& rg --multiline  "Sink #(.*)\n.*\n.*\n.*CMI8788 \[Oxygen HD Audio\] \(CMI8786 \(Xonar DGX\)\) Pro 1" -o -r '$1')
+pactl set-default-sink $(pactl list sinks short | grep -Po "[0-9]+\s(?=alsa_output.*pro-output.*2ch)")
+
+/home/horo/horoScripts/.screenlayout/.scripts/shared_all_end

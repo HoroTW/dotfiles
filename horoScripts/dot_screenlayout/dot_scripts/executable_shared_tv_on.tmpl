@@ -1,6 +1,6 @@
 #!/bin/sh
 
-timeout 2 curl --request POST \
+timeout 4 curl --request POST \
   --url https://ass.horotw.com/api/services/switch/turn_on \
   --header 'Authorization: Bearer {{ keepassxcAttribute "hass - homeassistant" "Aurora Token" }}' \
   --header 'Content-Type: application/json' \

@@ -1,4 +1,5 @@
 #!/bin/sh
+/home/horo/horoScripts/.screenlayout/.scripts/shared_all_start
 
 /home/horo/horoScripts/.screenlayout/.scripts/shared_tv_off
 
@@ -13,4 +14,6 @@ xrandr \
 # gaming and one_display is the same (linked)
 
 sleep 0
-pactl set-default-sink $(pactl list sinks |& rg --multiline  "Sink #(.*)\n.*\n.*\n.*CMI8788 \[Oxygen HD Audio\] \(CMI8786 \(Xonar DGX\)\) Pro$" -o -r '$1')
+pactl set-default-sink $(pactl list sinks short | grep -Po "[0-9]+\s(?=alsa_output.*6ch)")
+
+/home/horo/horoScripts/.screenlayout/.scripts/shared_all_end
