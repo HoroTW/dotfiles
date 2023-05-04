@@ -3,3 +3,8 @@
 sleep 10
 cd /home/horo/Repositorys/RazerBatteryTray/
 /home/horo/Repositorys/RazerBatteryTray/razer_battery_tray.py viper &
+
+/home/horo/horoScripts/hr-silentrgb
+/home/horo/horoScripts/hr-monitor-my-mic &
+/home/horo/horoScripts/hr-gpu-screenrecorder &
+
