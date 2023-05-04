@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+echo params $@
+echo start downmixing
+
+filepath="$1"
+filename=$(basename "$filepath")
+extension="${filename##*.}"
+filename="${filename%.*}"
+directory=$(dirname "$filepath")
+
+ffmpeg -i "$filepath" -filter_complex "[0:a:0][0:a:1]amerge=inputs=2[a]" -map 0:v -map "[a]" -c:v copy -c:a aac "${directory}/${filename}_downmixed.${extension}"
+echo done
+

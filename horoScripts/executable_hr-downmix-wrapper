@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+gnome-terminal -e "bash -c \"echo hi; /home/horo/horoScripts/hr-downmix $1; echo done \(closing in 5 secs\); sleep 5\""
+
