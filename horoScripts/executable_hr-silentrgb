@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
 
-openrgb --device "Crucial DRAM" --mode "static" --brightness 0 --color 000000
+openrgb --device "Crucial DRAM" --mode "static" --brightness 0 --color 000000 \
+	    --device "MSI GeForce RTX 3070 8GB Suprim X" --mode "off" --brightness 0 --color 000000
 
