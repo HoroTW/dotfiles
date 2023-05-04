@@ -1,3 +1,8 @@
 #!/usr/bin/env sh
+
 sudo rmmod nvidia_uvm
 sudo modprobe nvidia_uvm
+
+# or use https://wiki.archlinux.org/title/NVIDIA/Tips_and_tricks#Preserve_video_memory_after_suspend
+# that should eliminate the need for this script after suspend (and accessing cuda after suspend)
+
