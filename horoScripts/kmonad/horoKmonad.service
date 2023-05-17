@@ -1,0 +1,21 @@
+[Unit]
+Description=Horos Kmonad Service
+After=multi-user.target
+# User=horo
+# Group=horo
+
+[Service]
+Type=simple
+ExecStart=/home/horo/horoScripts/kmonad/myKeyboardRunner
+Restart=always
+RestartSec=200ms
+# Stop the service after 10 crashes in 1 minute
+StartLimitInterval=1min
+StartLimitBurst=10
+
+[Install]
+WantedBy=multi-user.target
+
+
+# To install the service, run:
+# sudo systemctl enable ./horoKmonad.service --now

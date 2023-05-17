@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# This file should only be editable by root
+
+# Start kmonad in a loop so that it will restart if it crashes
+# This is needed because it does not curently support all keycodes and 
+# will crash if it encounters one that is over 255 (e.g. the Nitro key on Acers)
+
+CONFIGFILE="/home/horo/horoScripts/kmonad/$(hostname)-KeyboardConf.kbd"
+
+# Check if kmonad is running
+if pgrep -x "kmonad" > /dev/null; then
+    echo "Kmonad is already running - so we will not start it again"
+    exit 0
+fi
+
+# try do delete /home/horo/horoScripts/kmonad/test.txt
+# rm /home/horo/horoScripts/kmonad/test.txt
+# make the file read only by root
+
+# Check if the config file exists
+if [[ ! -f "$CONFIGFILE" ]]; then
+    echo "Config file does not exist: $CONFIGFILE"
+    exit 1
+fi
+
+# Start kmonad
+kmonad "$CONFIGFILE"
