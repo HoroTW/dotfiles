@@ -1,0 +1,46 @@
+
+
+Host kobe
+	HostName kobe
+	User horo
+
+Host yggjump
+	HostName best.dscloud.me
+	User root
+	Port 4749
+	IdentityFile ~/.ssh/yggjump/id_ed25519
+	AddressFamily inet
+
+Host yggjumplocal
+	HostName 192.168.2.2
+	User root
+	Port 22
+	IdentityFile ~/.ssh/yggjump/id_ed25519
+	AddressFamily inet
+
+Host yggdrasil
+	HostName ygg2.horotw.com
+	User horo
+	Port 4749
+	IdentityFile ~/.ssh/id_ed25519
+	AddressFamily inet
+
+Host bestbednas
+	HostName best.dscloud.me
+	User horo
+	Port 8658
+	AddressFamily inet
+	DynamicForward 1080
+
+Host fau-cip
+	HostName cip2a0.cip.cs.fau.de
+	User li67vaxe
+
+Host fau-cip-2
+	HostName cip2a1.cip.cs.fau.de
+	User li67vaxe
+
+# Just to ensure no accidental Forwarding, see https://www.hackinglinuxexposed.com/articles/20040705.html
+Host *
+	ForwardX11 no
+	ForwardAgent no
