@@ -1,0 +1,216 @@
+#!/usr/bin/env python3
+
+# %%
+from time import sleep
+import psutil
+import re
+import subprocess
+import os
+
+# SETTINGS:
+
+# load is the same as in htop, 1 means one core is fully used
+# so if one fourth of my cores are saturated, I want the zone to be 100% red
+
+# Read DEBUG environment variable
+DEBUG = os.environ.get("DEBUG", False)
+
+
+# %%
+# parse keys:
+key_string = "'Key: Escape' 'Key: 1' 'Key: 2' 'Key: 3' 'Key: 4' 'Key: 5' 'Key: 6' 'Key: 7' 'Key: 8' 'Key: 9' 'Key: 0' 'Key: -' 'Key: =' 'Key: Backspace' 'Key: Tab' 'Key: Q' 'Key: W' 'Key: E' 'Key: R' 'Key: T' 'Key: Y' 'Key: U' 'Key: I' 'Key: O' 'Key: P' 'Key: [' 'Key: ]' 'Key: \ (ANSI)' 'Key: Caps Lock' 'Key: A' 'Key: S' 'Key: D' 'Key: F' 'Key: G' 'Key: H' 'Key: J' 'Key: K' 'Key: L' 'Key: ;' 'Key: '' 'Key: Enter' 'Key: Left Shift' 'Key: Z' 'Key: X' 'Key: C' 'Key: V' 'Key: B' 'Key: N' 'Key: M' 'Key: ,' 'Key: .' 'Key: /' 'Key: Right Shift' 'Key: Left Control' 'Key: Left Windows' 'Key: Left Alt' 'Key: Space' 'Key: Right Alt' 'Key: Right Fn' 'Key: Menu' 'Key: Right Control'"
+# first key is escape, second is 1 ...
+
+# with regex we match against and get the keys as groups
+keys = re.split("'Key: |' ", key_string)
+
+# filter all empty strings
+keys = list(filter(None, keys))
+if DEBUG: 
+    print(f"Keys: {keys}")
+
+# turn key into a dictionary with the key as the key and the value as color
+keys = {key: "black" for key in keys}
+
+# %%
+# call openRGB and set the color for each key for the device "Anne Pro 2"
+# we call it like that `openrgb --device "Anne Pro 2" --mode direct -b 100 --color black,black,red,black,...`
+
+def activate_colors(keys):
+    # build the command
+    command = "openrgb --device \"Anne Pro 2\" --mode direct -b 100 --color "
+    for key in keys:
+        command += keys[key] + ","
+    command = command[:-1] # remove last comma
+
+    # call the command and hide the output
+    ret = subprocess.call(command, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+    
+    if ret != 0:
+        print(f"error calling openrgb, return code: {ret}")
+        print(f"command was: {command}")
+    
+
+
+# now we can set the color for each single key
+# keys["A"] = "red"
+# set_color(keys)
+
+
+# define a few zones/bars that we will use to indicate stuff like cpu usage,...
+
+def set_zone_percent(zone, percent, color="red", off_color="black"):
+    # zone is e.g. "Z1" with its keys
+    # percent is e.g. 0.5
+    # we set the color of the first 50% of the keys to red and the rest to black
+    # we access the global keys variable
+    length = len(zone)
+
+    key_count_to_color = int(length * percent)
+    for key in zone:
+        if key_count_to_color > 0:
+            keys[key] = color
+            key_count_to_color -= 1
+        else:
+            keys[key] = off_color
+
+# %% example
+# set_zone_percent(zones["Z1"], 0.5, "blue", "black")
+# activate_colors()
+
+# %% example
+# set all keys to black
+# keys = {key: "black" for key in keys}
+# activate_colors()
+
+# %% activate all 4 zones and fill them from 0% to 100% with red in 10% steps
+# for i in range(11):
+#     for zone in zones:
+#         set_zone_percent(zones[zone], i/10, "red", "black")
+    
+#     time.sleep(0.5)
+#     activate_colors()
+
+# %% get the cpu load average
+
+def color_kinda_lerp(c1, c2, t, lerp_brightness_for_first_x_percent=0.15, 
+                     off_under_x_percent=0.05, 
+                     lerp_start_at_x_percent=0.1, lerp_stop_at_x_percent=0.9):
+    """
+    t: the lerp factor, 0 means c1, 1 means c2
+    off_under_x_percent: till which percent the color should be just black?
+    lerp_brightness_for_first_x_percent: till which percent the brightness should be increased to 100%?
+    lerp_start_at_x_percent: for how many percent should the color be solid c1 before lerp?
+    lerp_stop_at_x_percent: for how many percent should the color be solid c2 after lerp?
+    """
+    if t <= off_under_x_percent:
+        return "black"
+    
+    c1r, c1g, c1b = c1
+    c2r, c2g, c2b = c2
+
+    # https://www.geogebra.org/graphing/ryamtabu # for a visualization of this lerping
+    lerp_factor = (t - lerp_start_at_x_percent) / (lerp_stop_at_x_percent - lerp_start_at_x_percent)
+    lerp_factor = max(0, min(1, lerp_factor)) # clamp to [0,1]
+
+    r = c1r + (c2r - c1r) * lerp_factor
+    g = c1g + (c2g - c1g) * lerp_factor
+    b = c1b + (c2b - c1b) * lerp_factor
+
+    if t <= lerp_brightness_for_first_x_percent:
+        # e.g. if we are at 8% load we want to be at 80% brightness
+        bright_factor = t / lerp_brightness_for_first_x_percent # e.g. 0.08 / 0.1 = 0.8
+        r *= bright_factor
+        g *= bright_factor
+        b *= bright_factor
+
+    # round to nearest int
+    r = int(r + 0.5)
+    g = int(g + 0.5)
+    b = int(b + 0.5)
+
+    # convert to hex string to return like "FF0000"
+    return f"{r:02X}{g:02X}{b:02X}"
+
+
+def get_pseudo_cpu_load(percpu=False):
+    times = psutil.cpu_times_percent(percpu=True)
+    #[scputimes(user=6.3, nice=0.0, system=0.5, idle=93.0, iowait=0.0, irq=0.1, softirq=0.1, steal=0.0, guest=0.0, guest_nice=0.0),...]
+
+    # get the idle time of each one
+    idle_times = [time.idle for time in times]
+
+    # merge every 2 cores into one using the max idle time
+    fused_idle_times = [max(idle_times[i], idle_times[i+1]) for i in range(0, len(idle_times), 2)]
+
+    # invert the idle time to a pseudo load (idle time [0,100])
+    pseudo_loads = [100 - idle_time for idle_time in fused_idle_times]
+
+    # convert to percent
+    pseudo_loads = [pseudo_load / 100 for pseudo_load in pseudo_loads]
+
+    if not percpu:
+        return sum(pseudo_loads) / len(pseudo_loads)
+    
+    return pseudo_loads
+
+# %% define zones
+zones = {
+    "Z1": ["Escape", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "Backspace"],
+    # "Z2": ["Backspace", "=", "-", "0", "9", "8"],
+    "Z2": ["Tab", "Q", "W", "E", "R", "T"],
+    "Z3": ['\ (ANSI)', "]", "[", "P", "O", "I", "U"]
+}
+
+# example with a zone used as a bar:
+# set all keys to black
+# keys = {key: "black" for key in keys}
+
+# counter = 10
+# while counter > 0:
+#     counter -= 1
+#     cpu_load = get_pseudo_cpu_load()
+#     print(f"cpu load: {cpu_load}")
+#     # color lerp from green to red
+#     color = color_kinda_lerp((0,255,0), (255,0,0), cpu_load)
+#     print(f"color: {color}")
+#     print(f"Zone before change: {zones['Z1']}")
+#     set_zone_percent(zones["Z1"], cpu_load, color, "black")
+#     print(f"Zone after change: {zones['Z1']}")
+#     activate_colors()
+
+# test with tool stress: `stress --cpu 16 --timeout 10`
+
+# %% Alternative that displays each core as one pixel with a color from green to red
+# set all keys to black
+keys = {key: "black" for key in keys}
+
+activate_colors(keys)
+# counter = 30
+while True:
+    # counter -= 1
+    modified = False
+    cpu_loads = get_pseudo_cpu_load(percpu=True)
+    # for debugging use four and multiply by  (counter / 20)
+    # cpu_loads = [1* (counter / 30)] * 4
+
+    # print the loads with 2 decimal places
+    if DEBUG:
+        print(f"cpu loads: {[f'{load:.2f}' for load in cpu_loads]}")
+    # color lerp from green to red
+    for i, cpu_load in enumerate(cpu_loads):
+        color = color_kinda_lerp((0,255,0), (255,0,0), cpu_load, 0.20, 0.05, 0.20, 0.9)
+        Z1_keys = zones["Z1"]
+        if keys[Z1_keys[i + 1]] != color:
+            keys[Z1_keys[i + 1]] = color
+            modified = True
+    
+    if modified: # optimization to only call openrgb if we actually changed something
+        activate_colors(keys)
+    else:
+        sleep(1)
+
+
+# More Ideas:
+# psutil.cpu_freq() #scpufreq(current=4177.349625, min=2200.0, max=3800.0)
+# psutil.sensors_temperatures()
