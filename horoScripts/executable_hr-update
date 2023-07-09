@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+tmux \
+new-session \
+'sleep 1 && sudo pacman -Syu && echo "now updating aur.. " && yay && echo "now starting upgrading git aur packages" && yay --devel && echo "Enter to close.." && read enter'\; \
+split-window -h \
+'sleep 1 && flatpak update && echo "Enter to close.." && read enter'\; \
+
