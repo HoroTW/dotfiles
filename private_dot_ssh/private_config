@@ -1,17 +1,28 @@
-
+Host kopia-ygg.horotw.com
+  HostName kopia-ygg.horotw.com
+  Port 4749
+  User sftp-horo
+	IdentityFile /home/horo/.ssh/kopia/id_ed25519
 
 Host kobe
 	HostName kobe
 	User horo
 
-Host yggjump
+Host cip2acomputer
+	HostName bla
+
+Host _yggjump
 	HostName best.dscloud.me
 	User root
 	Port 4749
 	IdentityFile ~/.ssh/yggjump/id_ed25519
 	AddressFamily inet
 
-Host yggjumplocal
+Host kayumii kayumii-Linux
+  HostName kayumii-Linux
+  User kayumii
+
+Host _yggjumplocal
 	HostName 192.168.2.2
 	User root
 	Port 22
@@ -19,11 +30,28 @@ Host yggjumplocal
 	AddressFamily inet
 
 Host yggdrasil
-	HostName ygg2.horotw.com
+	HostName theygg2.horotw.com
 	User horo
 	Port 4749
 	IdentityFile ~/.ssh/id_ed25519
 	AddressFamily inet
+	ForwardAgent yes
+
+Host dirkpc
+	HostName 192.168.2.64
+	User dirk
+	# to force a tty
+	RequestTTY yes
+	RemoteCommand bash -c "zsh"
+	
+	Port 22
+	ProxyJump yggdrasil
+
+Host dirk
+	HostName 192.168.2.64
+	User dirk
+	IdentityFile ~/.ssh/id_ed25519
+	Port 22
 
 Host bestbednas
 	HostName best.dscloud.me
@@ -40,7 +68,129 @@ Host fau-cip-2
 	HostName cip2a1.cip.cs.fau.de
 	User li67vaxe
 
+
+Host alice
+	HostName 127.0.0.1
+	User vagrant
+	IdentityFile ~/.ssh/nopwd/id_ed25519
+	Port 2220
+
+Host bob
+	HostName 127.0.0.1
+	User vagrant
+	IdentityFile ~/.ssh/nopwd/id_ed25519
+	Port 2221
+
+Host mallory
+	HostName 127.0.0.1
+	User vagrant
+	IdentityFile ~/.ssh/nopwd/id_ed25519
+	Port 2222
+
+Host hackprak_server_controller
+	HostName 131.188.31.86
+	User stud5
+	IdentityFile ~/.ssh/nopwd/id_ed25519
+	Port 43023
+
+Host hass
+	HostName 192.168.0.108
+	User hassio
+
+Host lancache#old erlangen server
+	HostName lancache#192.168.0.198
+	User horo
+
+Host pve
+# when the dns server is down we still want to connect to it to fix it 
+	HostName 10.13.37.4
+	User root
+
+Host rg35xxh
+	HostName rg35xxh
+	User root
+
+Host yonaguni
+  HostName yonaguni.local
+  User pi
+
+
+##################################FAU HPC##################################
+Host csnhr.nhr.fau.de csnhr
+	HostName csnhr.nhr.fau.de
+	User iwi1113h
+	IdentityFile ~/.ssh/fau_hpc/id_ed25519_fau_hpc
+	IdentitiesOnly yes
+	PasswordAuthentication no
+	PreferredAuthentications publickey
+	ForwardX11 no
+	ForwardX11Trusted no
+
+
+Host fritz.nhr.fau.de fritz
+	HostName fritz.nhr.fau.de
+	User iwi1113h
+	ProxyJump csnhr.nhr.fau.de
+	IdentityFile ~/.ssh/fau_hpc/id_ed25519_fau_hpc
+	IdentitiesOnly yes
+	PasswordAuthentication no
+	PreferredAuthentications publickey
+	ForwardX11 no
+	ForwardX11Trusted no
+
+Host alex.nhr.fau.de alex
+	HostName alex.nhr.fau.de
+	User iwi1113h
+	ProxyJump csnhr.nhr.fau.de
+	IdentityFile ~/.ssh/fau_hpc/id_ed25519_fau_hpc
+	IdentitiesOnly yes
+	PasswordAuthentication no
+	PreferredAuthentications publickey
+	ForwardX11 no
+	ForwardX11Trusted no
+
+# needed only for Tier3-Grundversorgung
+Host tinyx.nhr.fau.de tinyx
+	HostName tinyx.nhr.fau.de
+	User iwi1113h
+	ProxyJump csnhr.nhr.fau.de
+	IdentityFile ~/.ssh/fau_hpc/id_ed25519_fau_hpc
+	IdentitiesOnly yes
+	PasswordAuthentication no
+	PreferredAuthentications publickey
+	ForwardX11 no
+	ForwardX11Trusted no
+
+# needed only for Tier3-Grundversorgung
+Host woody.nhr.fau.de woody
+	HostName woody.nhr.fau.de
+	User iwi1113h
+	ProxyJump csnhr.nhr.fau.de
+	IdentityFile ~/.ssh/fau_hpc/id_ed25519_fau_hpc
+	IdentitiesOnly yes
+	PasswordAuthentication no
+	PreferredAuthentications publickey
+	ForwardX11 no
+	ForwardX11Trusted no
+
+# needed only for Tier3-Grundversorgung
+Host meggie.rrze.fau.de meggie.rrze.uni-erlangen.de meggie
+	HostName meggie.rrze.uni-erlangen.de
+	User iwi1113h
+	ProxyJump csnhr.nhr.fau.de
+	IdentityFile ~/.ssh/fau_hpc/id_ed25519_fau_hpc
+	IdentitiesOnly yes
+	PasswordAuthentication no
+	PreferredAuthentications publickey
+	ForwardX11 no
+	ForwardX11Trusted no
+
+
+##################################END FAU HPC##################################
+
+
 # Just to ensure no accidental Forwarding, see https://www.hackinglinuxexposed.com/articles/20040705.html
 Host *
 	ForwardX11 no
 	ForwardAgent no
+	AddKeysToAgent yes

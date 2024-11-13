@@ -1,9 +1,18 @@
 #!/bin/sh
 
-timeout 4 curl --request POST \
+
+timeout 8 curl --request POST \
   --url https://ass.horotw.com/api/services/switch/turn_on \
   --header 'Authorization: Bearer {{ keepassxcAttribute "hass - homeassistant" "Aurora Token" }}' \
   --header 'Content-Type: application/json' \
-  --data '{
-	"entity_id": "switch.living_room_tv"
-}'
+  --data '{"entity_id": "switch.living_room_tv"}' \
+& (sleep 0.5 && timeout 4 curl --request POST \
+  --url https://ass.horotw.com/api/services/switch/turn_on \
+  --header 'Authorization: Bearer {{ keepassxcAttribute "hass - homeassistant" "Aurora Token" }}' \
+  --header 'Content-Type: application/json' \
+  --data '{"entity_id": "switch.living_room_tv"}' ) \
+& (sleep 1 && timeout 4 curl --request POST \
+  --url https://ass.horotw.com/api/services/switch/turn_on \
+  --header 'Authorization: Bearer {{ keepassxcAttribute "hass - homeassistant" "Aurora Token" }}' \
+  --header 'Content-Type: application/json' \
+  --data '{"entity_id": "switch.living_room_tv"}' )

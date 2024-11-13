@@ -1,4 +1,9 @@
 #!/usr/bin/env sh
 
-timeout 3 kquitapp5 plasmashell || timeout 2 killall plasmashell ; kstart5 plasmashell &
+#timeout 3 kquitapp6 plasmashell buildksycoca5 || timeout 2 killall plasmashell buildksycoca5 ; kstart plasmashell &
 
+timeout 3 kquitapp6 buildksycoca5 || timeout 2 killall -KILL buildksycoca5
+timeout 3 kquitapp6 plasmashell || timeout 2 killall -KILL plasmashell
+
+DISPLAY=:0 kstart plasmashell &
+sleep 1 && echo 'Done'

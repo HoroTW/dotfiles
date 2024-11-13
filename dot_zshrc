@@ -6,15 +6,10 @@ fi
 # }}}
 
 # Source manjaro-zsh-configuration
-if [[ -e /usr/share/zsh/manjaro-zsh-config ]]; then
-  source /usr/share/zsh/manjaro-zsh-config
+if [[ -e /home/horo/manjaro-zsh-config ]]; then
+  source /home/horo/manjaro-zsh-config
 fi
-# Use manjaro zsh prompt
-#if [[ -e /usr/share/zsh/manjaro-zsh-prompt ]]; then
-#  source /usr/share/zsh/manjaro-zsh-prompt
-#fi
-# =============================================================================
-#
+
 # Utility functions for zoxide.
 #
 
@@ -149,18 +144,21 @@ fi
 #
 # eval "$(zoxide init zsh)"
 
-
 # add fzf (ctrl+r and alt+c and more?)
 if [ -x "$(command -v fzf)"  ]; then
     source /usr/share/fzf/key-bindings.zsh
 fi
 
 # I don't want zsh to have a small history
-export HISTSIZE=10000000
+
+HISTFILE=~/.zsh_history
+export HISTSIZE=100000000
 export SAVEHIST=$HISTSIZE
 setopt EXTENDED_HISTORY          # Write the history file in the ":start:elapsed;command" format.
 setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits.
 
+#export EDITOR=/usr/bin/nano
+#export VISUAL=/usr/bin/nano
 
 alias gm=/usr/bin/gm
 alias vim=nvim
@@ -170,6 +168,19 @@ alias open='handlr open'
 alias o=open
 alias sshkitty='kitty +kitten ssh'
 alias cat=bat
+alias man=batman
+alias pic='chafa --center on'
+alias p=pic
+alias extract='unp -U'
+alias x='extract'
+alias f='fd -HIi'
+alias ff='fd -HIi --hyperlink=always'
+alias gpte='gh copilot explain'
+alias gpts='gh copilot suggest'
+alias rg='rg --no-ignore --hidden --ignore-case'
+alias duff='duf -only-mp "/mnt/*,/"'
+alias hrgd='hr-get-local-network-devices'
+
 
 PATH="$PATH:/home/horo/Applications:/home/horo/.cache/yay/distrobox/pkg/distrobox/usr/bin"
 
@@ -178,3 +189,179 @@ export QT_QPA_PLATFORMTHEME='gnome'
 eval "$(starship init zsh)"
 
 export PATH=$HOME/horoScripts:$PATH
+export PATH=$HOME/.flatpak/bin:$PATH
+
+# fix for youtube 60fps vids not using hw accel
+export LIBVA_DRIVER_NAME=nvidia
+export LIBVA_DRIVERS_PATH=/usr/lib/dri
+
+WINDOWS_ENTRY=$(grep -n 'menuentry' /boot/grub/grub.cfg | grep 'Windows' | head -n  1 | cut -d: -f1)
+alias wreboot="sudo grub-reboot $WINDOWS_ENTRY && sudo reboot"
+
+# alias w='which -a'
+alias catw='cat $(which -a $1)'
+
+# wh() {
+#     # use mode: wh <file> => which <file>
+#     # use mode: wh <command> [args] <file> => <command> [args] `which <file>`
+#     if [[ $# -eq 1 ]]; then
+#         which -a $1
+#     else
+#         # Extract the last argument (assumed to be the file)
+#         file="${@: -1}"
+#         echo "File to be resolved by 'which': $file"
+
+#         # Extract all arguments except the last one (the command and its options)
+#         cmd=("${@:1:$#-1}")
+#         echo "Command and arguments: ${cmd[@]}"
+
+#         # Find the file path using `which`
+#         file_path=$(which "$file")
+#         echo "Resolved file path: $file_path"
+
+#         # Run the command with the file path found by `which`
+#         # "${cmd[@]}" "$file_path"
+#     fi
+# }
+
+# variant with wh <command> [args] <file>
+wh() {
+    # If only one argument is passed, use `which` to find the file path
+    local arg_count=$#
+    if [ $arg_count -eq 1 ]; then
+        which -a "$1"
+    else
+        # Extract the last argument (assumed to be the file)
+        file="${@: -1}"
+        # echo "File to be resolved by 'which': $file"
+
+        # Extract all arguments except the last one (the command and its options)
+        cmd=("${@:1:$arg_count-1}")
+
+        cmd_str=$(printf "%s " "${cmd[@]}")
+        # echo "Command and arguments: ${cmd_str% }"
+
+        # Find the file path using `which`
+        file_path=$(which "$file")
+        # echo "Resolved file path: $file_path"
+
+        # Print full command
+        echo "Full command: ${cmd_str%}$file_path"
+        # Run the command with the file path found by `which`
+        "${cmd[@]}" "$file_path"
+    fi
+}
+
+# variant with wh <file> <command> [args]
+# wh() {
+#     if [[ $# -eq 1 ]]; then
+#         which -a $1
+#     else
+#         # Extract the first argument (assumed to be the file)
+#         file="$1"
+#         echo "File to be resolved by 'which': $file"
+#         file_path=$(which "$file")
+#         echo "Resolved file path: $file_path"
+
+#         shift # Remove the first argument (the file)
+#         echo "Command and arguments: $@"
+#         # Run the command with the file path found by `which`
+#         # "$file_path" "$@"
+#     fi
+
+# }
+
+
+
+reencode_video_archive() {
+    # ffmpeg -i "2024-04-22 14-36-13.mkv" -crf 35 -preset veryfast -vf "fps=24" "k32_nominmax_1.4M.mkv"
+    local input_file="$1"
+    local output_file="${1%.*}_reencoded.mkv"
+    # fps=24
+    # crf=35
+    # preset=veryfast # this is more than just the speed, it also affects the quality and size (not linear to speed)
+
+    if [[ -z "$input_file" ]]; then
+        echo "Usage: reencode_video_archive <input_file> [output_file]"
+        echo "Example: reencode_video_archive video.mkv"
+        return 1
+    fi
+
+    if [[ -n "$2" ]]; then
+        output_file="$2"
+    fi
+
+    ffmpeg -i "$input_file" -crf 35 -preset veryfast -vf "fps=24" "$output_file"
+
+    echo "Input size: $(du -h "$input_file" | cut -f1)"
+    echo "Output size: $(du -h "$output_file" | cut -f1)"
+    echo "Executed command: ffmpeg -i \"$input_file\" -crf 35 -preset veryfast -vf \"fps=24\" \"$output_file\""
+}
+
+
+reencode_video() {
+    local input_file="$1"
+    local output_file="${1%.*}_reencoded.mkv"
+    
+    local bitrate="${2:-}"
+    local fps="${3:-}"
+    local audio_track="${4:-}"
+    
+
+    if [[ -z "$input_file" ]]; then
+        echo "Usage: reencode_video <input_file> [bitrate in kbps - default 1 (in Mbps)] [fps - default same as input] [audio_track - default all]"
+        echo "Example: reencode_video video.mkv 30 1 500 # reencodes video.mkv to 30fps with only the first audio track and 500kbps bitrate"
+        echo ""
+        echo "Audio track options: 0 for no tracks, 1 for first track, 2 for second track, etc."
+        echo "Bitrate is in kbps"
+        return 1
+    fi
+
+    # Determine the audio track mapping
+    if [[ "$audio_track" == "0" ]]; then
+        audio_map_args=()
+    elif [[ -n "$audio_track" ]]; then
+        audio_map_args=("-map" "0:a:$((audio_track - 1))")
+    else
+        audio_map_args=("-map" "0:a")
+    fi
+
+    # Determine the bitrate
+    if [[ -z "$bitrate" ]]; then
+        bitrate=1.0
+    fi
+
+    # Determine the fps
+    if [[ -z "$fps" ]]; then
+        fps_map_args=()
+    else
+        fps_map_args=("-vf" "fps=$fps")
+    fi
+
+
+    # Combine arrays into strings for echo
+    audio_map_str="${audio_map_args[*]}"
+    fps_map_str="${fps_map_args[*]}"
+
+    echo "Will execute the following command:"
+    echo "ffmpeg -i \"$input_file\" $fps_map_str -c:v h264_nvenc -b:v \"${bitrate}M\" -map 0:v $audio_map_str -c:a copy \"$output_file\""
+    
+    
+    sleep 2
+
+    ffmpeg -i "$input_file" "${fps_map_args[@]}" -c:v h264_nvenc -b:v "${bitrate}M" -map 0:v "${audio_map_args[@]}" -c:a copy "$output_file"
+    
+
+    # display input size and output size
+    echo "Input size: $(du -h "$input_file" | cut -f1)"
+    echo "Output size: $(du -h "$output_file" | cut -f1)"
+}
+
+
+
+# Added by ProtonUp-Qt on 27-07-2024 03:55:25
+if [ -d "/home/horo/stl/prefix" ]; then export PATH="$PATH:/home/horo/stl/prefix"; fi
+
+
+setopt HIST_IGNORE_SPACE # dont store commands with space in front
+

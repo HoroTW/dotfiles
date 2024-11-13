@@ -3,8 +3,9 @@
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 cd $SCRIPT_DIR
 
-SEL=$(ls .screenlayout/ | rofi -dmenu -p "Monitor Setup" -no-custom -selected-row 2 -i) \
-&& .screenlayout/"$SEL" \
+SEL=$(ls .screenlayout/ | rofi -dmenu -p "Monitor Setup" -no-custom -selected-row 4 -i) \
 && .screenlayout/"$SEL"
+#&& .screenlayout/"$SEL"
 
 # Execute it twice because if the screen was off xrandr can get confused
+# I don't do that anymore becuase then all scripts and their handling get also executed twice :see_no_evil:

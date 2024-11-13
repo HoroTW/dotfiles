@@ -1,15 +1,27 @@
 #!/bin/sh
 
-sleep 10
+sleep 5
 
 # Only on Aurora
-if [ "$(hostname)" = "Aurora" ]; then
+if [ "$(hostname)" = "Aurora.local" ]; then
     cd /home/horo/Repositories/RazerBatteryTray/
-    /home/horo/Repositories/RazerBatteryTray/razer_battery_tray.py viper &
-    openrgb --server & /home/horo/horoScripts/hr-keyboard-top &
-    /home/horo/horoScripts/hr-silentrgb
+    . .venv/bin/activate
+    /home/horo/horoScripts/razer-battery-icon viper &
+    /home/horo/horoScripts/hr-silentrgb &
+    # openrgb --server & # spammed to many Network server started stuff
+    # /home/horo/horoScripts/hr-keyboard-top &
 fi
 
+sleep 2
+cd ~ 
+
 /home/horo/horoScripts/hr-monitor-my-mic &
-/home/horo/horoScripts/hr-gpu-screenrecorder &
+#/home/horo/horoScripts/hr-gpu-screenrecorder &
+yakuake &
+GDK_BACKEND=x11 /usr/bin/ulauncher --hide-window --no-window-shadow &
+syncthing &
+kclockd &
+/usr/bin/nextcloud -background &
+
+/usr/bin/steam-runtime %U &
 

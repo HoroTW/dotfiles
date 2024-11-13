@@ -1,12 +1,13 @@
 [edit]
     command = "code"
     args = ["--wait", "--new-window"]
+
 [merge]
     command = "code"
-    args = ["--wait", "--new-window", "--diff", "{{ .Source }}", "{{ .Destination }}"]
+    args = ["--wait", "--new-window", "--diff", "{{ .Destination }}", "{{ .Source }}"]
     #args = [".Source:{{ .Source }}", ".Destination:{{ .Destination }}", ".Target:{{ .Target }}"]
 
 [keepassxc]
-    database = "/home/horo/keepass/horo.kdbx"
-    args = [ "-k", "/home/horo/.horo/horo.key"]
-
+    database = "/home/horo/keepass/chezmoi_secrets.kdbx"
+    args = [ "-k", "/home/horo/.horo/horo.key", "--no-password"]
+    prompt = false
