@@ -1,0 +1,49 @@
+;; This is lisp sintax
+
+;;
+;; helpful: https://jtroo.github.io/
+;;
+
+;; what keys should be processed?
+(defsrc
+  
+  Backquote 1 2 3 4 5 6 7 8 9 0 - = 
+  CapsLock  q w e r 
+	    a s d f
+	              Period
+                      ControlRight
+)
+
+(defalias
+  ;; tap-hold ist the action that we do here
+  ;; tap-hold function params: tap timeout, hold timeout, tap action, hold action
+  caps-mod (tap-hold 0 100 Escape (layer-while-held fn-layer))
+)
+
+;; A second modifier to get into the fn-layer
+(defalias
+  rightctrl-mod (tap-hold 0 100 ControlRight (layer-while-held fn-layer))
+)
+
+;; in the layer we need the same order as in the defsrc
+(deflayer base
+  Backquote 1 2 3 4 5 6 7 8 9 0 - = 
+  @caps-mod q w e r 
+	    a s d f
+	    	      Period
+                      @rightctrl-mod
+)
+
+(deflayer fn-layer 
+  Backquote F1 F2 F3 F4 F5 F6 F7 F8 F9 F10 F11 F12
+  CapsLock  PageUp ArrowUp PageDown Home 
+            ArrowLeft ArrowDown ArrowRight End
+                      ContextMenu
+		      ControlRight
+)
+
+;; to tell it to process all keys - not needed right now
+;;(defcfg
+;;  process-unmapped-keys yes
+;;)
+
