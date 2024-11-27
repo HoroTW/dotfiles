@@ -61,10 +61,21 @@ for pkg in $packages; do
 done
 
 if [ "$platform" = "arch" ]; then
-    echo "Syncing packages for arch"
-    sudo pacman -Sy
-    echo "going to do: sudo pacman -S $selected_packages --noconfirm --needed"
-    sudo pacman -S $selected_packages --noconfirm --needed
+    echo -e "\n\nCheking packages  (errors are shown for missing packages)"
+    if ! yay -Q $selected_packages; then
+        echo -e "\nNew packages needed, partial update or full update? (p/f)"
+        echo "(partial updates are not recommended)"
+        read -r update
+
+        if [ "$update" = "p" ] || [ "$update" = "P" ]; then
+            yay -Sy
+        else
+            yay -Syu
+        fi
+
+        echo -e "\ngoing to do: yay -S $selected_packages --needed"
+        yay -S $selected_packages --needed
+    fi
 elif [ "$platform" = "debian" ]; then
     echo "Syncing packages for debian"
     sudo apt-get update
