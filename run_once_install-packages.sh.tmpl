@@ -115,3 +115,65 @@ for svc in "${services[@]}"; do
         systemctl enable --now "$svc"
     )
 done
+
+
+
+################# Host specific #################
+
+host="$(hostname)"
+if [ "$host" = "kawasaki" ]; then
+    echo -e "\nApplying for individual host $host"
+    kawasaki_packages=(
+        intel-undervolt
+        kanata-bin # AUR package
+        #tlp # somehow kde does this really good on its own
+        qt6-sensors # needed for auto rotation in tablet mode
+    )
+
+    # kanata
+    if ! [ -f '/lib/systemd/system/kanata.service' ]; then 
+        echo 'kanata.service does not exist, copying using sudo!!...'
+        sudo cp /home/horo/.config/kanata/kanata.service /lib/systemd/system/kanata.service
+    fi
+
+    # intel undervold
+    # check if the config is not edited on this system, (ensures only copy once)
+    if [ $(pacman -Qkk intel-undervolt | grep -c 'intel-undervolt.conf') -eq 0 ]; then
+        echo 'intel-undervolt.conf does not exist, copying using sudo!!...'
+        sudo cp /home/horo/.config/etc-target/intel-undervolt.conf /etc/intel-undervolt.conf
+    fi
+
+
+    selected_packages=""
+    # transform to string
+    for pkg in "${kawasaki_packages[@]}"; do selected_packages="$selected_packages $pkg" ; done
+
+    echo "Cheking packages for $host (errors are shown for missing packages)"
+    if ! yay -Q $selected_packages; then
+        yay -S $selected_packages --needed
+    fi
+
+    echo -e "\nChecking Services for $host"
+    kawasaki_services=(
+        intel-undervolt.service
+        kanata.service
+    )
+
+    for svc in "${kawasaki_services[@]}"; do
+        echo -n "checking $svc... "
+        systemctl is-enabled --type=service "$svc" > /dev/null && echo "already enabled" || (
+            echo -e "\nEnableing $svc..."
+            systemctl enable --now "$svc"
+        )
+    done
+fi
+
+
+################# Settings scripts ################
+
+FIRST_WALLPAPER_IMAGE="$(ls /home/horo/Pictures/wallpapers | head -n 1)"
+if [ -n "$FIRST_WALLPAPER_IMAGE" ]; then
+    echo "Trying to set plasma6 wallpaper to $FIRST_WALLPAPER_IMAGE"
+    plasma-apply-wallpaperimage /home/horo/Pictures/wallpapers/$FIRST_WALLPAPER_IMAGE 2>&1 1>/dev/null
+fi
+
