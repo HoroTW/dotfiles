@@ -1,3 +1,9 @@
+encryption = "age"
+
+[age]
+    identity = "/home/horo/.config/chezmoi/age/key.txt"
+    recipient = "age1nmplh8ag4ma64zhzk3rs5jt75s5zx50fnvhxx4ug9ellh9v39ylsjfyq9u"
+
 [edit]
     command = "code"
     args = ["--wait", "--new-window"]
