@@ -175,9 +175,13 @@ fi
 
 ################# Settings scripts ################
 
-FIRST_WALLPAPER_IMAGE="$(ls /home/horo/Pictures/wallpapers | head -n 1)"
-if [ -n "$FIRST_WALLPAPER_IMAGE" ]; then
-    echo "Trying to set plasma6 wallpaper to $FIRST_WALLPAPER_IMAGE"
-    plasma-apply-wallpaperimage /home/horo/Pictures/wallpapers/$FIRST_WALLPAPER_IMAGE 2>&1 1>/dev/null
-fi
+# FIRST_WALLPAPER_IMAGE="$(ls /home/horo/Pictures/wallpapers | head -n 1)"
+# WALLPAPER = '~/.config/horo_files/coffee_spice_and_wolf.png'
+
+# if [ -n '~/.config/horo_files/coffee_spice_and_wolf.png' ]; then
+#     if ! [ "$(md5sum )" ) ]
+#     #echo "Trying to set plasma6 wallpaper to $FIRST_WALLPAPER_IMAGE"
+#     sudo cp ~/.config/horo_files/coffee_spice_and_wolf.png /usr/share/endeavouros/backgrounds/endeavouros-wallpaper.png
+#     # plasma-apply-wallpaperimage /home/horo/Pictures/wallpapers/$FIRST_WALLPAPER_IMAGE 2>&1 1>/dev/null
+# fi
 
