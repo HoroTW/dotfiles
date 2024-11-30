@@ -8,6 +8,10 @@ encryption = "age"
     command = "code"
     args = ["--wait", "--new-window"]
 
+[diff]
+    command = "meld"
+    args = ["--diff", "{{ .Destination }}", "{{ .Target }}"]
+
 [merge]
     command = "code"
     args = ["--wait", "--new-window", "--diff", "{{ .Destination }}", "{{ .Source }}"]
