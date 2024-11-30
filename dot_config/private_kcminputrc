@@ -1,0 +1,14 @@
+[Libinput][1102][4645][DELL08AF:00 044E:1225 Mouse]
+Enabled=true
+
+[Libinput][1102][4645][DELL08AF:00 044E:1225 Touchpad]
+DisableWhileTyping=false
+NaturalScroll=true
+PointerAcceleration=0.050
+ScrollFactor=0.3
+
+[Libinput][1386][18634][Wacom HID 48CA Pen]
+Orientation=0
+
+[Libinput][2][1][PS/2 Generic Mouse]
+Enabled=false
