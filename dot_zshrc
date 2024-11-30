@@ -195,8 +195,9 @@ export PATH=$HOME/.flatpak/bin:$PATH
 export LIBVA_DRIVER_NAME=nvidia
 export LIBVA_DRIVERS_PATH=/usr/lib/dri
 
-WINDOWS_ENTRY=$(grep -n 'menuentry' /boot/grub/grub.cfg | grep 'Windows' | head -n  1 | cut -d: -f1)
-alias wreboot="sudo grub-reboot $WINDOWS_ENTRY && sudo reboot"
+# This is currently not working
+#WINDOWS_ENTRY=$(grep -n 'menuentry' /boot/grub/grub.cfg | grep 'Windows' | head -n  1 | cut -d: -f1)
+#alias wreboot="sudo grub-reboot $WINDOWS_ENTRY && sudo reboot"
 
 # alias w='which -a'
 alias catw='cat $(which -a $1)'
