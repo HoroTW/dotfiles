@@ -94,7 +94,7 @@ Host hackprak_server_controller
 	Port 43023
 
 Host hass
-	HostName 192.168.0.108
+	HostName 10.13.37.5
 	User hassio
 
 Host lancache#old erlangen server
@@ -108,7 +108,11 @@ Host pve
 
 Host rg35xxh
 	HostName rg35xxh
-	User root
+  User root
+
+Host rg35xxhk
+  Hostname rg35xxhk
+  User root
 
 Host yonaguni
   HostName yonaguni.local

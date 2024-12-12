@@ -1,0 +1,24 @@
+#!/bin/sh
+cd /home/horo/horoScripts/.screenlayout/.scripts/
+./shared_all_start
+
+#./shared_tv_off & 
+./shared_desk_power_on &
+
+sleep 5
+
+xrandr \
+--output HDMI-0 --off \
+--output DP-0 --off \
+--output DP-1 --off \
+--output DP-2 --off \
+--output DP-3 --mode 1920x1080 --primary --rotate normal --refresh 60 --brightness 0.2 \
+--output DP-4 --off \
+--output DP-5 --off
+# test with https://www.testufo.com/framerates-text#pps=240&count=1 # see how it does not work correctly - thats what my eyes see too...
+
+pactl set-default-sink $(pactl list sinks short | grep -Po "[0-9]+\s(?=alsa_output\.usb-SteelSeries.*)")
+
+pactl set-default-sink 
+
+./shared_all_end

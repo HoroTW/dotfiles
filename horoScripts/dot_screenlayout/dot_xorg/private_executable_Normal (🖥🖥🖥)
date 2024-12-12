@@ -1,0 +1,20 @@
+#!/bin/sh
+cd /home/horo/horoScripts/.screenlayout/.scripts
+./shared_all_start
+
+./shared_tv_off &
+./shared_desk_power_on &
+
+xrandr \
+--output HDMI-0 --off \
+--output DP-0 --off \
+--output DP-1 --mode 1920x1080 --pos 0x180 --rotate normal --refresh 60 --gamma 1.25:1.3:1.3 --brightness 1 \
+--output DP-2 --off \
+--output DP-3 --mode 1920x1080 --pos 4480x138 --rotate normal --refresh 60 --gamma 1.32:1.25:1.25 --brightness 1 \
+--output DP-4 --primary --mode 2560x1440 --pos 1920x-190 --rotate normal --refresh 120 --brightness 1 \
+--output DP-5 --off
+# test with https://www.testufo.com/framerates-text#pps=240&count=1 # see how it does not work correctly - thats what my eyes 
+
+pactl set-default-sink "$(pactl list sinks | grep -oPz '(?<=Sink #)[0-9]+(?=(\n.*){3}Description: CMI8788.*Pro 1)\n')"
+
+./shared_all_end

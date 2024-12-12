@@ -1,0 +1,22 @@
+#!/bin/sh
+cd /home/horo/horoScripts/.screenlayout/.scripts/
+./shared_all_start
+
+./shared_tv_off &
+./shared_desk_power_off &
+
+xrandr \
+--output HDMI-0 --off \
+--output DP-0 --off \
+--output DP-1 --off \
+--output DP-2 --off \
+--output DP-3 --off \
+--output DP-4 --primary --mode 2560x1440 --pos 1920x-190 --rotate normal --refresh 165 --brightness 1 \
+--output DP-5 --off
+# gaming and one_display is the same (linked)
+
+sleep 0
+#pactl set-default-sink $(pactl list sinks short | grep -Po "[0-9]+\s(?=alsa_output.*6ch)")
+pactl set-default-sink $(pactl list sinks short | grep -Po "[0-9]+\s(?=alsa_output\.usb-SteelSeries.*)")
+
+./shared_all_end

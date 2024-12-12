@@ -14,6 +14,6 @@ xrandr \
 --output DP-5 --off
 
 sleep 6
-pactl set-default-sink $(pactl list sinks short | grep -Po "[0-9]+\s(?=alsa_output.*hdmi.*2ch)")
+pactl set-default-sink "$(pactl list sinks | grep -oPz '(?<=Sink #)[0-9]+(?=(\n.*){3}Description: GA104 High Definition Audio Controller Pro 8)\n')"
 
 /home/horo/horoScripts/.screenlayout/.scripts/shared_all_end
