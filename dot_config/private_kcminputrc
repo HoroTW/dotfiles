@@ -12,3 +12,9 @@ Orientation=0
 
 [Libinput][2][1][PS/2 Generic Mouse]
 Enabled=false
+
+[Libinput][5426][123][Razer Razer Viper Ultimate Dongle]
+PointerAccelerationProfile=1
+
+[Libinput][5426][126][RAZER Razer Mouse Dock]
+PointerAccelerationProfile=1

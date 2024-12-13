@@ -19,6 +19,15 @@ padding=4
 [Tiling][143b67c3-54ad-5d68-9ad3-d003090675b5]
 tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
 
+[Tiling][711a364c-7605-56d1-aa14-7ce28791a7a5]
+tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
+
+[Tiling][a13db71b-bf57-5d5c-b507-d4638315260b]
+tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
+
+[Tiling][f824d543-eaef-50a4-84c4-d558baa1e319]
+tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
+
 [Wayland]
 InputMethod[$e]=/usr/share/applications/com.github.maliit.keyboard.desktop
 VirtualKeyboardEnabled=true

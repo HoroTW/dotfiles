@@ -13,8 +13,13 @@ encryption = "age"
     args = ["--diff", "{{ .Destination }}", "{{ .Target }}"]
 
 [merge]
-    command = "code"
-    args = ["--wait", "--new-window", "--diff", "{{ .Destination }}", "{{ .Source }}"]
+    command = "meld"
+    args = ["{{ .Source }}", "{{ .Target }}", "{{ .Destination }}", "--output", "{{ .Destination }}"]
+
+    #args = ["--auto-merge", "{{ .Destination }}", "{{ .Source }}", "{{ .Target }}", "--output", "{{ .Destination }}"]
+
+    #command = "code"
+    #args = ["--wait", "--new-window", "--diff", "{{ .Destination }}", "{{ .Source }}"]
     #args = [".Source:{{ .Source }}", ".Destination:{{ .Destination }}", ".Target:{{ .Target }}"]
 
 [keepassxc]
