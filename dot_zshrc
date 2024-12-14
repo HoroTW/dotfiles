@@ -181,7 +181,8 @@ alias rg='rg --no-ignore --hidden --ignore-case'
 alias duff='duf -only-mp "/mnt/*,/"'
 alias hrgd='hr-get-local-network-devices'
 alias git-tree='git log --graph --oneline --decorate --all --date=short --pretty=format:"%h - %an, %ad : %s"'
-
+alias nixm='vim /home/horo/packages.nix && nix-env -irf /home/horo/packages.nix # Nix management'
+alias nixcg='nix-collect-garbage # Nix collect garbage'
 
 PATH="$PATH:/home/horo/Applications:/home/horo/.cache/yay/distrobox/pkg/distrobox/usr/bin"
 
