@@ -1,3 +1,21 @@
+
+# Hostname for worker needs to be changed after registration
+# using ssh tinyx salloc.tinygpu --gres=gpu::1 --time=6:00:00
+Host worker
+	HostName tg060
+	User iwi1113h
+	ProxyJump csnhr.nhr.fau.de
+	IdentityFile ~/.ssh/fau_hpc/id_ed25519_fau_hpc
+	IdentitiesOnly yes
+	PasswordAuthentication no
+	PreferredAuthentications publickey
+	ForwardX11 no
+	ForwardX11Trusted no
+
+Host 10.32.8.2
+  HostName 10.32.8.2
+  User root
+
 Host kopia-ygg.horotw.com
   HostName kopia-ygg.horotw.com
   Port 4749
