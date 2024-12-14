@@ -180,6 +180,7 @@ alias gpts='gh copilot suggest'
 alias rg='rg --no-ignore --hidden --ignore-case'
 alias duff='duf -only-mp "/mnt/*,/"'
 alias hrgd='hr-get-local-network-devices'
+alias git-tree='git log --graph --oneline --decorate --all --date=short --pretty=format:"%h - %an, %ad : %s"'
 
 
 PATH="$PATH:/home/horo/Applications:/home/horo/.cache/yay/distrobox/pkg/distrobox/usr/bin"
