@@ -1,3 +1,23 @@
+Host massive
+  HostName 171.22.172.136
+  Port 51821
+  User root
+  IdentityFile /home/horo/.ssh/kopia/id_ed25519
+
+Host leon-dockerhost
+  HostName leon-dockerhost.tailbfadd.ts.net
+  User root
+
+Host daisy
+  HostName 152.53.251.157
+  User root
+  Port 51825
+  IdentityFile /home/horo/.ssh/kopia/id_ed25519
+
+Host bestbedbaknas
+  Hostname bestbedbaknas.tailbfadd.ts.net
+  User root
+  Port 8658
 
 # Hostname for worker needs to be changed after registration
 # using ssh tinyx salloc.tinygpu --gres=gpu::1 --time=6:00:00
@@ -47,10 +67,18 @@ Host _yggjumplocal
 	IdentityFile ~/.ssh/yggjump/id_ed25519
 	AddressFamily inet
 
+Host heartwood
+	HostName theygg2.horotw.com
+	User root
+	Port 4750
+	AddressFamily inet
+	ForwardAgent yes
+
+
 Host yggdrasil
 	HostName theygg2.horotw.com
-	User horo
-	Port 4749
+	User root
+	Port 8222
 	IdentityFile ~/.ssh/id_ed25519
 	AddressFamily inet
 	ForwardAgent yes
