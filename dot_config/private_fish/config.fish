@@ -6,6 +6,7 @@ alias gm='/usr/bin/gm'
 alias vim='nvim'
 #alias ls='exa --icons --group-directories-first'
 alias ls='lsd --hyperlink=auto -A --group-directories-first'
+alias l='ls -lah'
 
 alias open='handlr open'
 alias o='open'
