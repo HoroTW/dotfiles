@@ -103,7 +103,7 @@ Host heartwood heartwood.tailbfadd.ts.net
 	HostName theygg2.horotw.dev
 	User root
 	Port 4750
-	IdentityFile ~/.ssh/no_pwd/id_ed25519_no_pwd
+	IdentityFile ~/.ssh/id_ed25519
 	AddressFamily inet
 	ForwardAgent yes
 

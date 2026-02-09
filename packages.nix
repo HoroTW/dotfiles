@@ -2,7 +2,7 @@
 
 [
   # WHithout this nix would be uninstalled 
-  pkgs.nix
+  #pkgs.nix
 
 
 
