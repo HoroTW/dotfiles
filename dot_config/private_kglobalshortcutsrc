@@ -13,6 +13,16 @@ _k_friendly_name=Keyboard Layout Switcher
 EyedropperColorPick=Meta+Shift+P,Ctrl+P,Pick a New Color
 _k_friendly_name=Eyedropper
 
+[com.microsoft.Edge]
+C09C432048B54B197CFB93C36D6B9D2B-launch-element-picker=none,none,Enter element picker mode
+C09C432048B54B197CFB93C36D6B9D2B-launch-element-zapper=none,none,Enter element zapper mode
+C09C432048B54B197CFB93C36D6B9D2B-launch-logger=none,none,Open the logger
+C09C432048B54B197CFB93C36D6B9D2B-open-dashboard=none,none,Open the dashboard
+C09C432048B54B197CFB93C36D6B9D2B-relax-blocking-mode=none,none,Relax blocking mode
+C09C432048B54B197CFB93C36D6B9D2B-toggle-cosmetic-filtering=none,none,Toggle cosmetic filtering
+C09C432048B54B197CFB93C36D6B9D2B-toggle-javascript=none,none,Toggle JavaScript
+_k_friendly_name=Microsoft Edge
+
 [kaccess]
 Toggle Screen Reader On and Off=none,Meta+Alt+S,Toggle Screen Reader On and Off
 _k_friendly_name=Accessibility
@@ -31,7 +41,7 @@ decrease_volume_small=Shift+Volume Down,Shift+Volume Down,Decrease Volume by 1%
 increase_microphone_volume=Microphone Volume Up,Microphone Volume Up,Increase Microphone Volume
 increase_volume=Volume Up,Volume Up,Increase Volume
 increase_volume_small=Shift+Volume Up,Shift+Volume Up,Increase Volume by 1%
-mic_mute=Microphone Mute\tMeta+Volume Mute,Microphone Mute\tMeta+Volume Mute,Mute Microphone
+mic_mute=Meta+Ctrl+Alt+Shift+F8\tMicrophone Mute\tMeta+Volume Mute,Microphone Mute\tMeta+Volume Mute,Mute Microphone
 mute=Volume Mute,Volume Mute,Mute
 
 [ksmserver]
