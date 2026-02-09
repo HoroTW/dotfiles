@@ -1,6 +1,26 @@
-Host massive
-  HostName 171.22.172.136
-  Port 51821
+#local
+
+# Hostname for worker needs to be changed after registration
+# using ssh tinyx salloc.tinygpu --gres=gpu::1 --time=6:00:00
+Host root-arch-dockerhost arch-dockerhost
+	HostName arch-dockerhost
+	User root
+
+
+Host leon-mac-mini
+	HostName 192.168.2.155
+	User root
+	ProxyJump heartwood
+	IdentityFile ~/.ssh/no_pwd/id_ed25519_no_pwd
+	#IdentitiesOnly yes
+	#PasswordAuthentication no
+	#PreferredAuthentications publickey
+	ForwardX11 no
+	ForwardX11Trusted no
+
+Host nestmedaddy
+  HostName nestmedaddy
+  Port 22
   User root
   IdentityFile /home/horo/.ssh/kopia/id_ed25519
 
@@ -36,11 +56,18 @@ Host 10.32.8.2
   HostName 10.32.8.2
   User root
 
-Host kopia-ygg.horotw.com
-  HostName kopia-ygg.horotw.com
+Host yggdrasil yggdrasil.tailbfadd.ts.net
+  User root
+  Port 8222
+  HostName ygg2.horotw.dev
+  IdentityFile ~/.ssh/id_ed25519
+  AddressFamily inet
+
+Host kopia-ygg.horotw.dev
+  HostName kopia-ygg.horotw.dev
   Port 4749
   User sftp-horo
-	IdentityFile /home/horo/.ssh/kopia/id_ed25519
+  IdentityFile /home/horo/.ssh/kopia/id_ed25519
 
 Host kobe
 	HostName kobe
@@ -57,7 +84,7 @@ Host _yggjump
 	AddressFamily inet
 
 Host kayumii kayumii-Linux
-  HostName kayumii-Linux
+  HostName 10.13.37.234
   User kayumii
 
 Host _yggjumplocal
@@ -67,21 +94,14 @@ Host _yggjumplocal
 	IdentityFile ~/.ssh/yggjump/id_ed25519
 	AddressFamily inet
 
-Host heartwood
-	HostName theygg2.horotw.com
+Host heartwood heartwood.tailbfadd.ts.net
+	HostName theygg2.horotw.dev
 	User root
 	Port 4750
+	IdentityFile ~/.ssh/no_pwd/id_ed25519_no_pwd
 	AddressFamily inet
 	ForwardAgent yes
 
-
-Host yggdrasil
-	HostName theygg2.horotw.com
-	User root
-	Port 8222
-	IdentityFile ~/.ssh/id_ed25519
-	AddressFamily inet
-	ForwardAgent yes
 
 Host dirkpc
 	HostName 192.168.2.64
@@ -114,31 +134,6 @@ Host fau-cip-2
 	HostName cip2a1.cip.cs.fau.de
 	User li67vaxe
 
-
-Host alice
-	HostName 127.0.0.1
-	User vagrant
-	IdentityFile ~/.ssh/nopwd/id_ed25519
-	Port 2220
-
-Host bob
-	HostName 127.0.0.1
-	User vagrant
-	IdentityFile ~/.ssh/nopwd/id_ed25519
-	Port 2221
-
-Host mallory
-	HostName 127.0.0.1
-	User vagrant
-	IdentityFile ~/.ssh/nopwd/id_ed25519
-	Port 2222
-
-Host hackprak_server_controller
-	HostName 131.188.31.86
-	User stud5
-	IdentityFile ~/.ssh/nopwd/id_ed25519
-	Port 43023
-
 Host hass
 	HostName 10.13.37.5
 	User hassio
@@ -157,13 +152,77 @@ Host rg35xxh
   User root
 
 Host rg35xxhk
-  Hostname rg35xxhk
+  HostName rg35xxhk
   User root
 
 Host yonaguni
   HostName yonaguni.local
-  User pi
+  User horo
 
+Host steamdeck
+  HostName 10.13.37.232
+  User deck
+  Port 22
+
+
+################################## BESTBED ##################################
+Host bbnatalie
+	HostName natalie
+	User "PC1216 NGU"
+	ProxyJump heartwood
+	PasswordAuthentication no
+	PreferredAuthentications publickey
+	ForwardX11Trusted no
+	RemoteCommand powershell
+	RequestTTY yes
+
+Host bbbuchhaltung
+	HostName BUCHHALTUNG
+	User "BUCHHALTUNG"
+	ProxyJump heartwood
+	PasswordAuthentication no
+	PreferredAuthentications publickey
+	ForwardX11Trusted no
+	RemoteCommand powershell
+	RequestTTY yes
+
+Host bbthekenpc
+	HostName THEKENPCC
+	User "Theke"
+	ProxyJump heartwood
+	PasswordAuthentication no
+	PreferredAuthentications publickey
+	ForwardX11Trusted no
+	RemoteCommand powershell
+	RequestTTY yes
+
+Host bestbednas
+	HostName best.dscloud.me
+	User horo
+	Port 8658
+	AddressFamily inet
+    # DynamicForward 1080
+
+Host bestbedbaknas
+  Hostname bestbedbaknas.tailbfadd.ts.net
+  User root
+  Port 8658
+
+Host dirkpc
+	HostName 192.168.2.64
+	User dirk
+	# to force a tty
+	RequestTTY yes
+	RemoteCommand bash -c "zsh"
+	Port 22
+	ProxyJump yggdrasil
+
+Host dirk
+	HostName 192.168.2.64
+	User dirk
+	IdentityFile ~/.ssh/id_ed25519
+	Port 22
+################################## END BESTBED ##################################
 
 ##################################FAU HPC##################################
 Host csnhr.nhr.fau.de csnhr
