@@ -1,0 +1,657 @@
+# Blur \{\{\{
+if [[ $(ps --no-header -p $PPID -o comm) =~ '^yakuake|kitty$' ]]; then
+        for wid in $(xdotool search --pid $PPID); do
+            xprop -f _KDE_NET_WM_BLUR_BEHIND_REGION 32c -set _KDE_NET_WM_BLUR_BEHIND_REGION 0 -id $wid; done
+fi
+# \}\}\}
+
+unsetopt CORRECT                   # Auto correct mistakes
+unsetopt EXTENDEDGLOB            # I hate it because of confusion with ^foo* (meaning match anything that does not start with foo) 
+setopt NOCASEGLOB                # Case insensitive globbing
+setopt RCEXPANDPARAM             # Array expension with parameters
+unsetopt NOCHECKJOBS             # Don't warn about running processes when exiting (THEY GET KILLED, so yeah I want to be warned!)
+# there is `program &|` and `program &!` for backgrounding and disowning
+setopt NUMERICGLOBSORT           # Sort filenames numerically when it makes sense
+setopt NOBEEP                    # No beep
+setopt APPENDHISTORY             # Append history instead of overwriting
+setopt INC_APPEND_HISTORY        # commands are added to the history immediately (after start of the command), otherwise only when shell exits.
+unsetopt INC_APPEND_HISTORY_TIME # Append history after the command is finished
+unsetopt SHARE_HISTORY           # Share history imidiately (==INC_APPEND_HISTORY) + load new history from others
+setopt HISTIGNOREALLDUPS         # If a new command is a duplicate, remove the older one
+unsetopt AUTOCD                  # if only directory path is entered, cd there. I don't like it!
+setopt HISTIGNORESPACE           # Don't save commands that start with a space
+
+zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' # Case insensitive tab completion
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"         # Colored completion (different colors for dirs/files/etc)
+zstyle ':completion:*' rehash true                              # automatically find new executables in path 
+# Speed up completions
+zstyle ':completion:*' accept-exact '*(N)'
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.zsh/cache
+
+WORDCHARS=${WORDCHARS//\/[&.;]}                                 # Don't consider certain characters part of the word
+
+
+## Keybindings section
+bindkey -e
+bindkey '^[[7~' beginning-of-line                               # Home key
+bindkey '^[[H' beginning-of-line                                # Home key
+if [[ "${terminfo[khome]}" != "" ]]; then
+  bindkey "${terminfo[khome]}" beginning-of-line                # [Home] - Go to beginning of line
+fi
+bindkey '^[[8~' end-of-line                                     # End key
+bindkey '^[[F' end-of-line                                      # End key
+if [[ "${terminfo[kend]}" != "" ]]; then
+  bindkey "${terminfo[kend]}" end-of-line                       # [End] - Go to end of line
+fi
+bindkey '^[[2~' overwrite-mode                                  # Insert key
+bindkey '^[[3~' delete-char                                     # Delete key
+bindkey '^[[C'  forward-char                                    # Right key
+bindkey '^[[D'  backward-char                                   # Left key
+bindkey '^[[5~' history-beginning-search-backward               # Page up key
+bindkey '^[[6~' history-beginning-search-forward                # Page down key
+
+# Navigate words with ctrl+arrow keys
+bindkey '^[Oc' forward-word                                     #
+bindkey '^[Od' backward-word                                    #
+bindkey '^[[1;5D' backward-word                                 #
+bindkey '^[[1;5C' forward-word                                  #
+bindkey '^H' backward-kill-word                                 # delete previous word with ctrl+backspace
+bindkey '^[[Z' undo                                             # Shift+tab undo last action
+
+
+# Theming section  
+autoload -U compinit colors zcalc
+compinit -d
+colors
+
+
+
+## Plugins section: Enable fish style features
+# Use syntax highlighting
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# Use history substring search
+source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
+# bind UP and DOWN arrow keys to history substring search
+zmodload zsh/terminfo
+bindkey "$terminfo[kcuu1]" history-substring-search-up
+bindkey "$terminfo[kcud1]" history-substring-search-down
+bindkey '^[[A' history-substring-search-up			
+bindkey '^[[B' history-substring-search-down
+
+# Runs before showing the prompt
+function mzc_termsupport_precmd {
+  [[ "${DISABLE_AUTO_TITLE:-}" == true ]] && return
+  title $ZSH_THEME_TERM_TAB_TITLE_IDLE $ZSH_THEME_TERM_TITLE_IDLE
+}
+
+# Runs before executing the command
+function mzc_termsupport_preexec {
+  [[ "${DISABLE_AUTO_TITLE:-}" == true ]] && return
+
+  emulate -L zsh
+
+  # split command into array of arguments
+  local -a cmdargs
+  cmdargs=("${(z)2}")
+  # if running fg, extract the command from the job description
+  if [[ "${cmdargs[1]}" = fg ]]; then
+    # get the job id from the first argument passed to the fg command
+    local job_id jobspec="${cmdargs[2]#%}"
+    # logic based on jobs arguments:
+    # http://zsh.sourceforge.net/Doc/Release/Jobs-_0026-Signals.html#Jobs
+    # https://www.zsh.org/mla/users/2007/msg00704.html
+    case "$jobspec" in
+      <->) # %number argument:
+        # use the same <number> passed as an argument
+        job_id=${jobspec} ;;
+      ""|%|+) # empty, %% or %+ argument:
+        # use the current job, which appears with a + in $jobstates:
+        # suspended:+:5071=suspended (tty output)
+        job_id=${(k)jobstates[(r)*:+:*]} ;;
+      -) # %- argument:
+        # use the previous job, which appears with a - in $jobstates:
+        # suspended:-:6493=suspended (signal)
+        job_id=${(k)jobstates[(r)*:-:*]} ;;
+      [?]*) # %?string argument:
+        # use $jobtexts to match for a job whose command *contains* <string>
+        job_id=${(k)jobtexts[(r)*${(Q)jobspec}*]} ;;
+      *) # %string argument:
+        # use $jobtexts to match for a job whose command *starts with* <string>
+        job_id=${(k)jobtexts[(r)${(Q)jobspec}*]} ;;
+    esac
+
+    # override preexec function arguments with job command
+    if [[ -n "${jobtexts[$job_id]}" ]]; then
+      1="${jobtexts[$job_id]}"
+      2="${jobtexts[$job_id]}"
+    fi
+  fi
+
+  # cmd name only, or if this is sudo or ssh, the next cmd
+  local CMD=${1[(wr)^(*=*|sudo|ssh|mosh|rake|-*)]:gs/%/%%}
+  local LINE="${2:gs/%/%%}"
+
+  title '$CMD' '%100>...>$LINE%<<'
+}
+
+autoload -U add-zsh-hook
+add-zsh-hook precmd mzc_termsupport_precmd
+add-zsh-hook preexec mzc_termsupport_preexec
+
+
+# Required for $langinfo
+zmodload zsh/langinfo
+
+
+
+# URL-encode a string
+#
+# Encodes a string using RFC 2396 URL-encoding (%-escaped).
+# See: https://www.ietf.org/rfc/rfc2396.txt
+#
+# By default, reserved characters and unreserved "mark" characters are
+# not escaped by this function. This allows the common usage of passing
+# an entire URL in, and encoding just special characters in it, with
+# the expectation that reserved and mark characters are used appropriately.
+# The -r and -m options turn on escaping of the reserved and mark characters,
+# respectively, which allows arbitrary strings to be fully escaped for
+# embedding inside URLs, where reserved characters might be misinterpreted.
+#
+# Prints the encoded string on stdout.
+# Returns nonzero if encoding failed.
+#
+# Usage:
+#  zsh_urlencode [-r] [-m] [-P] <string> [<string> ...]
+#
+#    -r causes reserved characters (;/?:@&=+$,) to be escaped
+#
+#    -m causes "mark" characters (_.!~*''()-) to be escaped
+#
+#    -P causes spaces to be encoded as '%20' instead of '+'
+function zsh_urlencode() {
+  emulate -L zsh
+  local -a opts
+  zparseopts -D -E -a opts r m P
+
+  local in_str="$@"
+  local url_str=""
+  local spaces_as_plus
+  if [[ -z $opts[(r)-P] ]]; then spaces_as_plus=1; fi
+  local str="$in_str"
+
+  # URLs must use UTF-8 encoding; convert str to UTF-8 if required
+  local encoding=$langinfo[CODESET]
+  local safe_encodings
+  safe_encodings=(UTF-8 utf8 US-ASCII)
+  if [[ -z ${safe_encodings[(r)$encoding]} ]]; then
+    str=$(echo -E "$str" | iconv -f $encoding -t UTF-8)
+    if [[ $? != 0 ]]; then
+      echo "Error converting string from $encoding to UTF-8" >&2
+      return 1
+    fi
+  fi
+
+  # Use LC_CTYPE=C to process text byte-by-byte
+  local i byte ord LC_ALL=C
+  export LC_ALL
+  local reserved=';/?:@&=+$,'
+  local mark='_.!~*''()-'
+  local dont_escape="[A-Za-z0-9"
+  if [[ -z $opts[(r)-r] ]]; then
+    dont_escape+=$reserved
+  fi
+  # $mark must be last because of the "-"
+  if [[ -z $opts[(r)-m] ]]; then
+    dont_escape+=$mark
+  fi
+  dont_escape+="]"
+
+  # Implemented to use a single printf call and avoid subshells in the loop,
+  # for performance
+  local url_str=""
+  for (( i = 1; i <= ${#str}; ++i )); do
+    byte="$str[i]"
+    if [[ "$byte" =~ "$dont_escape" ]]; then
+      url_str+="$byte"
+    else
+      if [[ "$byte" == " " && -n $spaces_as_plus ]]; then
+        url_str+="+"
+      else
+        ord=$(( [##16] #byte ))
+        url_str+="%$ord"
+      fi
+    fi
+  done
+  echo -E "$url_str"
+}
+
+# Emits the control sequence to notify many terminal emulators
+# of the cwd
+#
+# Identifies the directory using a file: URI scheme, including
+# the host name to disambiguate local vs. remote paths.
+function mzc_termsupport_cwd {
+  # Percent-encode the host and path names.
+  local URL_HOST URL_PATH
+  URL_HOST="$(zsh_urlencode -P $HOST)" || return 1
+  URL_PATH="$(zsh_urlencode -P $PWD)" || return 1
+
+  # common control sequence (OSC 7) to set current host and path
+  printf "\e]7;%s\a" "file://${URL_HOST}${URL_PATH}"
+}
+
+# Use a precmd hook instead of a chpwd hook to avoid contaminating output
+# i.e. when a script or function changes directory without `cd -q`, chpwd
+# will be called the output may be swallowed by the script or function.
+add-zsh-hook precmd mzc_termsupport_cwd
+
+
+# if dir colors do not work anymore
+#eval "$(dircolors -b)"
+
+# Utility functions for zoxide.
+#
+
+# pwd based on the value of _ZO_RESOLVE_SYMLINKS.
+function __zoxide_pwd() {
+    \builtin pwd -L
+}
+
+# cd + custom logic based on the value of _ZO_ECHO.
+function __zoxide_cd() {
+    # shellcheck disable=SC2164
+    \builtin cd -- "$@"
+}
+
+# =============================================================================
+#
+# Hook configuration for zoxide.
+#
+
+# Hook to add new entries to the database.
+function __zoxide_hook() {
+    \command zoxide add -- "$(__zoxide_pwd || \builtin true)"
+}
+
+# Initialize hook.
+# shellcheck disable=SC2154
+if [[ ${precmd_functions[(Ie)__zoxide_hook]:-} -eq 0 ]] && [[ ${chpwd_functions[(Ie)__zoxide_hook]:-} -eq 0 ]]; then
+    chpwd_functions+=(__zoxide_hook)
+fi
+
+# =============================================================================
+#
+# When using zoxide with --no-cmd, alias these internal functions as desired.
+#
+
+__zoxide_z_prefix='z#'
+
+# Jump to a directory using only keywords.
+function __zoxide_z() {
+    # shellcheck disable=SC2199
+    if [[ "$#" -eq 0 ]]; then
+        __zoxide_cd ~
+    elif [[ "$#" -eq 1 ]] && [[ "$1" = '-' ]]; then
+        if [[ -n "${OLDPWD}" ]]; then
+            __zoxide_cd "${OLDPWD}"
+        else
+            # shellcheck disable=SC2016
+            \builtin printf 'zoxide: $OLDPWD is not set'
+            return 1
+        fi
+    elif [[ "$#" -eq 1 ]] && [[ -d "$1" ]]; then
+        __zoxide_cd "$1"
+    elif [[ "$@[-1]" == "${__zoxide_z_prefix}"* ]]; then
+        # shellcheck disable=SC2124
+        \builtin local result="${@[-1]}"
+        __zoxide_cd "${result:${#__zoxide_z_prefix}}"
+    else
+        \builtin local result
+        result="$(\command zoxide query --exclude "$(__zoxide_pwd || \builtin true)" -- "$@")" &&
+            __zoxide_cd "${result}"
+    fi
+}
+
+# Jump to a directory using interactive search.
+function __zoxide_zi() {
+    \builtin local result
+    result="$(\command zoxide query -i -- "$@")" && __zoxide_cd "${result}"
+}
+
+# =============================================================================
+#
+# Commands for zoxide. Disable these using --no-cmd.
+#
+
+# Remove definitions.
+function __zoxide_unset() {
+    \builtin unalias "$@" &>/dev/null || \builtin true
+    \builtin unfunction "$@" &>/dev/null || \builtin true
+    \builtin unset "$@" &>/dev/null
+}
+
+__zoxide_unset z
+function z() {
+    __zoxide_z "$@"
+}
+
+__zoxide_unset zi
+function zi() {
+    __zoxide_zi "$@"
+}
+
+if [[ -o zle ]]; then
+    __zoxide_unset __zoxide_z_complete
+    function __zoxide_z_complete() {
+        # Only show completions when the cursor is at the end of the line.
+        # shellcheck disable=SC2154
+        [[ "${#words[@]}" -eq "${CURRENT}" ]] || return
+
+        if [[ "${#words[@]}" -eq 2 ]]; then
+            _files -/
+        elif [[ "${words[-1]}" == '' ]]; then
+            \builtin local result
+            # shellcheck disable=SC2086
+            if result="$(\command zoxide query -i -- ${words[2,-1]})"; then
+                __zoxide_result="${result}"
+            else
+                __zoxide_result=''
+            fi
+            \builtin printf '\e[5n'
+        fi
+    }
+
+    __zoxide_unset __zoxide_z_complete_helper
+    function __zoxide_z_complete_helper() {
+        \builtin local result="${__zoxide_z_prefix}${__zoxide_result}"
+        # shellcheck disable=SC2296
+        [[ -n "${__zoxide_result}" ]] && LBUFFER="${LBUFFER}${(q-)result}"
+        \builtin zle reset-prompt
+    }
+
+    \builtin zle -N __zoxide_z_complete_helper
+    \builtin bindkey "\e[0n" __zoxide_z_complete_helper
+    if [[ "${+functions[compdef]}" -ne 0 ]]; then
+        \compdef -d z
+        \compdef __zoxide_z_complete z
+    fi
+fi
+
+# =============================================================================
+#
+# To initialize zoxide, add this to your configuration (usually ~/.zshrc):
+#
+# eval "$(zoxide init zsh)"
+
+# add fzf (ctrl+r and alt+c and more?)
+# I switched from fzf to atuin
+#if [ -x "$(command -v fzf)"  ]; then
+#    source /usr/share/fzf/key-bindings.zsh
+#fi
+
+# I don't want zsh to have a small history
+
+HISTFILE=~/.zsh_history
+export HISTSIZE=100000000
+export SAVEHIST=$HISTSIZE
+setopt EXTENDED_HISTORY          # Write the history file in the ":start:elapsed;command" format.
+setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits.
+
+#export EDITOR=/usr/bin/nano
+#export VISUAL=/usr/bin/nano
+## Alias section
+alias cp="cp -i"                                                # Confirm before overwriting something
+alias df='df -h'                                                # Human-readable sizes
+alias free='free -m'                                            # Show sizes in MB
+
+
+alias gm=/usr/bin/gm
+alias vim=nvim
+#alias ls='exa --icons --group-directories-first'
+alias ls='lsd --hyperlink=auto -A'
+alias open='handlr open'
+alias o=open
+alias sshkitty='kitty +kitten ssh'
+alias cat=bat
+alias tree='tree -C' # always color
+alias man=batman
+alias pic='chafa --center on'
+alias p=pic
+alias extract='unp -U'
+alias x='extract'
+alias f='fd -HIi'
+alias ff='fd -HIi --hyperlink=always'
+alias dockerps='docker ps --format "table \{\{.Names\}\}\t\{\{.Status\}\}\t\{\{.Image\}\}\t\{\{.Command\}\}\t\{\{.RunningFor\}\}" --no-trunc'
+alias gpte='gh copilot explain'
+alias gpts='gh copilot suggest'
+alias rg='rg --no-ignore --hidden --ignore-case'
+alias duff='duf -only-mp "/mnt/*,/"'
+alias hrgd='hr-get-local-network-devices'
+alias git-tree='git log --graph --oneline --decorate --all --date=short --pretty=format:"%h - %an, %ad : %s"'
+alias nixm='vim /home/horo/packages.nix && nix-channel --update && nix-env --install --prebuilt-only --remove-all --file /home/horo/packages.nix'
+alias nixmv='echo -e "only looking ;)\n" && vim /home/horo/packages.nix && echo -e "Installed ones:\n" && nix-env -q | \cat'
+alias nixcg='nix-collect-garbage -d && nix-store --optimise # Nix collect garbage'
+
+PATH="$PATH:/home/horo/Applications:/home/horo/.cache/yay/distrobox/pkg/distrobox/usr/bin"
+
+export QT_QPA_PLATFORMTHEME='gnome'
+export HUGGING_FACE_HUB_TOKEN='{{ (keepassxc "HuggingFACE TOKEN").Password }}'
+export SFTPGOAPIKEY='{{ (keepassxc "SFTPGOAPIKEY").Password }}'
+
+eval "$(starship init zsh)"
+
+export PATH=$HOME/horoScripts:$PATH
+export PATH=$HOME/.flatpak/bin:$PATH
+export EDITOR='nvim'
+
+# fix for youtube 60fps vids not using hw accel
+export LIBVA_DRIVER_NAME=nvidia
+export LIBVA_DRIVERS_PATH=/usr/lib/dri
+
+# This is currently not working
+#WINDOWS_ENTRY=$(grep -n 'menuentry' /boot/grub/grub.cfg | grep 'Windows' | head -n  1 | cut -d: -f1)
+#alias wreboot="sudo grub-reboot $WINDOWS_ENTRY && sudo reboot"
+
+# alias w='which -a'
+alias catw='cat $(which -a $1)'
+
+# wh() {
+#     # use mode: wh <file> => which <file>
+#     # use mode: wh <command> [args] <file> => <command> [args] `which <file>`
+#     if [[ $# -eq 1 ]]; then
+#         which -a $1
+#     else
+#         # Extract the last argument (assumed to be the file)
+#         file="${@: -1}"
+#         echo "File to be resolved by 'which': $file"
+
+#         # Extract all arguments except the last one (the command and its options)
+#         cmd=("${@:1:$#-1}")
+#         echo "Command and arguments: ${cmd[@]}"
+
+#         # Find the file path using `which`
+#         file_path=$(which "$file")
+#         echo "Resolved file path: $file_path"
+
+#         # Run the command with the file path found by `which`
+#         # "${cmd[@]}" "$file_path"
+#     fi
+# }
+
+# variant with wh <command> [args] <file>
+wh() {
+    # If only one argument is passed, use `which` to find the file path
+    local arg_count=$#
+    if [ $arg_count -eq 1 ]; then
+        which -a "$1"
+    else
+        # Extract the last argument (assumed to be the file)
+        file="${@: -1}"
+        # echo "File to be resolved by 'which': $file"
+
+        # Extract all arguments except the last one (the command and its options)
+        cmd=("${@:1:$arg_count-1}")
+
+        cmd_str=$(printf "%s " "${cmd[@]}")
+        # echo "Command and arguments: ${cmd_str% }"
+
+        # Find the file path using `which`
+        file_path=$(which "$file")
+        # echo "Resolved file path: $file_path"
+
+        # Print full command
+        echo "Full command: ${cmd_str%}$file_path"
+        # Run the command with the file path found by `which`
+        "${cmd[@]}" "$file_path"
+    fi
+}
+
+# variant with wh <file> <command> [args]
+# wh() {
+#     if [[ $# -eq 1 ]]; then
+#         which -a $1
+#     else
+#         # Extract the first argument (assumed to be the file)
+#         file="$1"
+#         echo "File to be resolved by 'which': $file"
+#         file_path=$(which "$file")
+#         echo "Resolved file path: $file_path"
+
+#         shift # Remove the first argument (the file)
+#         echo "Command and arguments: $@"
+#         # Run the command with the file path found by `which`
+#         # "$file_path" "$@"
+#     fi
+
+# }
+
+
+
+reencode_video_archive() {
+    # ffmpeg -i "2024-04-22 14-36-13.mkv" -crf 35 -preset veryfast -vf "fps=24" "k32_nominmax_1.4M.mkv"
+    local input_file="$1"
+    local output_file="${1%.*}_reencoded.mkv"
+    # fps=24
+    # crf=35
+    # preset=veryfast # this is more than just the speed, it also affects the quality and size (not linear to speed)
+
+    if [[ -z "$input_file" ]]; then
+        echo "Usage: reencode_video_archive <input_file> [output_file]"
+        echo "Example: reencode_video_archive video.mkv"
+        return 1
+    fi
+
+    if [[ -n "$2" ]]; then
+        output_file="$2"
+    fi
+
+    ffmpeg -i "$input_file" -crf 35 -preset veryfast -vf "fps=24" "$output_file"
+
+    echo "Input size: $(du -h "$input_file" | cut -f1)"
+    echo "Output size: $(du -h "$output_file" | cut -f1)"
+    echo "Executed command: ffmpeg -i \"$input_file\" -crf 35 -preset veryfast -vf \"fps=24\" \"$output_file\""
+}
+
+
+reencode_video() {
+    local input_file="$1"
+    local output_file="${1%.*}_reencoded.mkv"
+    
+    local bitrate="${2:-}"
+    local fps="${3:-}"
+    local audio_track="${4:-}"
+    
+
+    if [[ -z "$input_file" ]]; then
+        echo "Usage: reencode_video <input_file> [bitrate in kbps - default 1 (in Mbps)] [fps - default same as input] [audio_track - default all]"
+        echo "Example: reencode_video video.mkv 30 1 500 # reencodes video.mkv to 30fps with only the first audio track and 500kbps bitrate"
+        echo ""
+        echo "Audio track options: 0 for no tracks, 1 for first track, 2 for second track, etc."
+        echo "Bitrate is in kbps"
+        return 1
+    fi
+
+    # Determine the audio track mapping
+    if [[ "$audio_track" == "0" ]]; then
+        audio_map_args=()
+    elif [[ -n "$audio_track" ]]; then
+        audio_map_args=("-map" "0:a:$((audio_track - 1))")
+    else
+        audio_map_args=("-map" "0:a")
+    fi
+
+    # Determine the bitrate
+    if [[ -z "$bitrate" ]]; then
+        bitrate=1.0
+    fi
+
+    # Determine the fps
+    if [[ -z "$fps" ]]; then
+        fps_map_args=()
+    else
+        fps_map_args=("-vf" "fps=$fps")
+    fi
+
+
+    # Combine arrays into strings for echo
+    audio_map_str="${audio_map_args[*]}"
+    fps_map_str="${fps_map_args[*]}"
+
+    echo "Will execute the following command:"
+    echo "ffmpeg -i \"$input_file\" $fps_map_str -c:v h264_nvenc -b:v \"${bitrate}M\" -map 0:v $audio_map_str -c:a copy \"$output_file\""
+    
+    
+    sleep 2
+
+    ffmpeg -i "$input_file" "${fps_map_args[@]}" -c:v h264_nvenc -b:v "${bitrate}M" -map 0:v "${audio_map_args[@]}" -c:a copy "$output_file"
+    
+
+    # display input size and output size
+    echo "Input size: $(du -h "$input_file" | cut -f1)"
+    echo "Output size: $(du -h "$output_file" | cut -f1)"
+}
+
+
+
+# Added by ProtonUp-Qt on 27-07-2024 03:55:25
+if [ -d "/home/horo/stl/prefix" ]; then export PATH="$PATH:/home/horo/stl/prefix"; fi
+
+
+setopt HIST_IGNORE_SPACE # dont store commands with space in front
+
+
+# Shell-GPT integration ZSH v0.2
+_sgpt_zsh() {
+if [[ -n "$BUFFER" ]]; then
+    _sgpt_prev_cmd=$BUFFER
+    BUFFER+="⌛"
+    \builtin zle -I && \builtin zle redisplay
+    BUFFER=$(sgpt --shell <<< "$_sgpt_prev_cmd" --no-interaction)
+    \builtin zle end-of-line
+fi
+}
+\builtin zle -N _sgpt_zsh
+\builtin bindkey '^o' _sgpt_zsh
+# Shell-GPT integration ZSH v0.2
+
+alias sgptf='sgpt --functions'
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/home/horo/.lmstudio/bin"
+
+# Without that nix tries to install all pkgs
+#export NIX_PATH=nixpkgs=https://github.com/NixOS/nixpkgs/archive/nixos-24.11.tar.gz
+
+# For nix pgks
+export PATH="$PATH:/home/horo/.nix-profile/bin"
+
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init - zsh)"
+
+# atuin
+eval "$(atuin init zsh --disable-up-arrow)" 
+
+HISTFILE=~/.zsh_history 
+
