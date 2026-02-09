@@ -38,6 +38,14 @@ alias git-tree='git log --graph --oneline --decorate --all --date=short --pretty
 alias nixm='vim /home/horo/packages.nix && nix-env -irf /home/horo/packages.nix # Nix management'
 alias nixcg='nix-collect-garbage # Nix collect garbage'
 
-set -x PATH $PATH /home/horo/Applications /home/horo/.cache/yay/distrobox/pkg/distrobox/usr/bin                                                               
-set -x PATH $HOME/horoScripts $PATH                                                                                                                           
-set -x PATH $HOME/.flatpak/bin $PATH 
+function ssh --wraps ssh
+  if test $TERM = xterm-kitty
+    set --function --export TERM xterm-256color
+  end
+  command ssh $argv
+end
+
+set -x PATH $PATH /home/horo/Applications /home/horo/.cache/yay/distrobox/pkg/distrobox/usr/bin
+set -x PATH $HOME/.flatpak/bin $PATH
+set -x PATH $HOME/.local/bin:$PATH
+set -x PATH $HOME/horoScripts $PATH
