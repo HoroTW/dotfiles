@@ -5,10 +5,6 @@ if [[ $(ps --no-header -p $PPID -o comm) =~ '^yakuake|kitty$' ]]; then
 fi
 # }}}
 
-# Source manjaro-zsh-configuration
-if [[ -e /home/horo/manjaro-zsh-config ]]; then
-  source /home/horo/manjaro-zsh-config
-fi
 
 # Utility functions for zoxide.
 #
@@ -368,3 +364,17 @@ if [ -d "/home/horo/stl/prefix" ]; then export PATH="$PATH:/home/horo/stl/prefix
 
 setopt HIST_IGNORE_SPACE # dont store commands with space in front
 
+
+# Shell-GPT integration ZSH v0.2
+_sgpt_zsh() {
+if [[ -n "$BUFFER" ]]; then
+    _sgpt_prev_cmd=$BUFFER
+    BUFFER+="⌛"
+    zle -I && zle redisplay
+    BUFFER=$(sgpt --shell <<< "$_sgpt_prev_cmd" --no-interaction)
+    zle end-of-line
+fi
+}
+zle -N _sgpt_zsh
+bindkey ^o _sgpt_zsh
+# Shell-GPT integration ZSH v0.2
