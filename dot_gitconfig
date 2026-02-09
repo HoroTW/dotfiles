@@ -1,5 +1,5 @@
 [user]
-	email = <horo@horotw.com>
+	email = git@horotw.dev
 	name = HoroTW
 [core]
 	excludesfile = /home/horo/.gitignore_global

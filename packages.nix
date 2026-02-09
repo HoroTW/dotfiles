@@ -1,16 +1,21 @@
 { pkgs ? import <nixpkgs> {}, unstable ? import <unstable> {}, nixgl ? import <nixgl> {} }:
 
 [
+  # WHithout this nix would be uninstalled 
+  pkgs.nix
+
+
+
+
   #vim
   #git
   #htop
   pkgs.cmatrix
   pkgs.brave
-  pkgs.rustdesk
+  unstable.rustdesk
+  unstable.avidemux
 
   #pkgs.orca-slicer
-  pkgs.fish
-
   #unstable.onlyoffice-bin
   #unstable.wpsoffice
   #unstable.softmaker-office
@@ -25,10 +30,11 @@
 
   # needed for some apps (like stellarium) 
   nixgl.auto.nixGLDefault
+  #nixgl.auto.nixVulkanNvidia
+
   unstable.nomacs
 
   #unstable.nuclear
-  pkgs.invidtui
   #headset # youtube listening app
 ]
 

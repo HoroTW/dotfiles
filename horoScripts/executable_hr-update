@@ -2,7 +2,12 @@
 
 tmux \
 new-session \
-'sleep 1 && sudo pacman -Syu && echo "now updating aur.. " && yay && echo "now starting upgrading git aur packages" && yay --devel && echo "Enter to close.." && read enter'\; \
+'sleep 1 && echo "Updating ARCH Mirrors" && reflector --verbose --country DE,NL,FI --protocol https --sort score --latest 20 --download-timeout 5 | sudo tee /etc/pacman.d/mirrorlist && echo "Updating EOS Mirrors" && sudo eos-rankmirrors --timeout 5 --sort age --verbose && echo "Updateing (no AUR) using eos-update" && eos-update && sudo grub-mkconfig -o /boot/grub/grub.cfg && echo "Now updating AUR... " && yay && echo "now starting upgrading git aur packages" && yay --devel && echo "Enter to close..." && read enter'\; \
 split-window -h \
-'sleep 1 && flatpak update && echo "Enter to close.." && read enter'\; \
+'sleep 1 && flatpak update && echo "Recheck in 5s" && sleep 5 && flatpak update && echo "Enter to close..." && read enter'\; \
+split-window -v \
+'sleep 1 && nix-channel --update && nix-env -irf /home/horo/packages.nix && nix-collect-garbage && echo "Enter to close..." && read enter'\; \
 
+
+echo "Pacdiff with Meld"
+sudo DIFFPROG=meld MERGEPROG=meld pacdiff

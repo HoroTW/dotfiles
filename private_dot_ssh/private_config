@@ -11,7 +11,7 @@ Host leon-mac-mini
 	HostName 192.168.2.155
 	User root
 	ProxyJump heartwood
-	IdentityFile ~/.ssh/no_pwd/id_ed25519_no_pwd
+	IdentityFile ~/.ssh/nopwd/id_ed25519
 	#IdentitiesOnly yes
 	#PasswordAuthentication no
 	#PreferredAuthentications publickey
@@ -26,6 +26,11 @@ Host nestmedaddy
 
 Host leon-dockerhost
   HostName leon-dockerhost.tailbfadd.ts.net
+  User root
+
+Host router
+  HostName 10.13.37.1
+  Port 22
   User root
 
 Host daisy

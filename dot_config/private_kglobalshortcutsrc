@@ -283,6 +283,24 @@ E45EEF54912E0A9DB0E595E6FA157948-toggle-cosmetic-filtering=none,none,Toggle cosm
 E45EEF54912E0A9DB0E595E6FA157948-toggle-javascript=none,none,Toggle JavaScript
 _k_friendly_name=org.chromium.Chromium
 
+[net.mkiol.SpeechNote]
+_k_friendly_name=Speech Note
+cancel=Ctrl+Alt+Shift+C,Ctrl+Alt+Shift+C,Cancel
+pause-resume-reading=Ctrl+Alt+Shift+P,Ctrl+Alt+Shift+P,Pause/Resume reading
+start-listening=Ctrl+Alt+Shift+L,Ctrl+Alt+Shift+L,Start listening
+start-listening-active-window=Ctrl+Alt+Shift+K,Ctrl+Alt+Shift+K,Start listening\\, text to active window
+start-listening-clipboard=Ctrl+Alt+Shift+J,Ctrl+Alt+Shift+J,Start listening\\, text to clipboard
+start-listening-translate=Ctrl+Alt+Shift+/,Ctrl+Alt+Shift+/,Start listening\\, always translate
+start-listening-translate-active-window=Ctrl+Alt+Shift+.,Ctrl+Alt+Shift+.,Start listening\\, always translate\\, text to active window
+start-listening-translate-clipboard=Ctrl+Alt+Shift+\\,,Ctrl+Alt+Shift+\\,,Start listening\\, always translate\\, text to clipboard
+start-reading=Ctrl+Alt+Shift+R,Ctrl+Alt+Shift+R,Start reading
+start-reading-clipboard=Ctrl+Alt+Shift+E,Ctrl+Alt+Shift+E,Start reading text from clipboard
+stop-listening=Ctrl+Alt+Shift+S,Ctrl+Alt+Shift+S,Stop listening
+switch-to-next-stt-model=Ctrl+Alt+Shift+B,Ctrl+Alt+Shift+B,Switch to next STT model
+switch-to-next-tts-model=Ctrl+Alt+Shift+M,Ctrl+Alt+Shift+M,Switch to next TTS model
+switch-to-prev-stt-model=Ctrl+Alt+Shift+V,Ctrl+Alt+Shift+V,Switch to previous STT model
+switch-to-prev-tts-model=Ctrl+Alt+Shift+N,Ctrl+Alt+Shift+N,Switch to previous TTS model
+
 [org_kde_powerdevil]
 Decrease Keyboard Brightness=Keyboard Brightness Down,Keyboard Brightness Down,Decrease Keyboard Brightness
 Decrease Screen Brightness=Monitor Brightness Down,Monitor Brightness Down,Decrease Screen Brightness

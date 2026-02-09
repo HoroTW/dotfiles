@@ -6,7 +6,9 @@
 # use the command with infilled values and watch out its micro not milliseconds
 # pactl set-port-latency-offset <NAME> <PORT> <BUFFER_SIZE_MICROSECONDS>
 # half a sec
-pactl set-port-latency-offset bluez_card.7C_96_D2_62_E0_32 headset-output 50000
+DEVICE=$(pactl list | grep -iP "device\.name = \"bluez_card\." | grep -Po "\"\K(.*)(?=\")" | head -n 1)
+pactl set-port-latency-offset $DEVICE headset-output 50000
+#pactl set-port-latency-offset bluez_card.7C_96_D2_62_E0_32 headset-output 50000
 
 sleep 1
 # finally restart the BT Service
