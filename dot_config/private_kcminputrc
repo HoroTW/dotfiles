@@ -7,6 +7,10 @@ NaturalScroll=true
 PointerAcceleration=0.050
 ScrollFactor=0.3
 
+[Libinput][1133][45083][M585/M590 Mouse]
+PointerAcceleration=0.400
+PointerAccelerationProfile=1
+
 [Libinput][1386][18634][Wacom HID 48CA Pen]
 Orientation=0
 

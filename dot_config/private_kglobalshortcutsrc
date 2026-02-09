@@ -4,9 +4,14 @@ switch-to-activity-496841b4-d76a-4708-ab62-2b4483a77f58=none,none,Switch to acti
 switch-to-activity-a3fccc5c-de6e-4bb4-98a5-d6de5df357fe=none,none,Switch to activity "Default"
 
 [KDE Keyboard Layout Switcher]
+Switch keyboard layout to EurKEY (US)=none,none,Switch keyboard layout to EurKEY (US)
 Switch to Last-Used Keyboard Layout=Meta+Alt+L,Meta+Alt+L,Switch to Last-Used Keyboard Layout
 Switch to Next Keyboard Layout=none,Meta+Alt+K,Switch to Next Keyboard Layout
 _k_friendly_name=Keyboard Layout Switcher
+
+[com.github.finefindus.eyedropper]
+EyedropperColorPick=Meta+Shift+P,Ctrl+P,Pick a New Color
+_k_friendly_name=Eyedropper
 
 [kaccess]
 Toggle Screen Reader On and Off=none,Meta+Alt+S,Toggle Screen Reader On and Off
@@ -52,6 +57,9 @@ ExposeClass=none,Ctrl+F7,Toggle Present Windows (Window class)
 ExposeClassCurrentDesktop=none,none,Toggle Present Windows (Window class on current desktop)
 Grid View=Meta+G,Meta+G,Toggle Grid View
 Increase Opacity=none,,Increase Opacity of Active Window by 5%
+Invert=Meta+Ctrl+I,Meta+Ctrl+I,Toggle Invert Effect
+Invert Screen Colors=none,none,Invert Screen Colors
+InvertWindow=Meta+Ctrl+U,Meta+Ctrl+U,Toggle Invert Effect on Window
 Kill Window=Meta+Shift+Q,Meta+Ctrl+Esc,Kill Window
 Move Tablet to Next Output=none,none,Move the tablet to the next output
 MoveMouseToCenter=none,Meta+F6,Move Mouse to Center
@@ -109,17 +117,21 @@ Switch to Screen to the Left=none,,Switch to Screen to the Left
 Switch to Screen to the Right=none,,Switch to Screen to the Right
 Toggle Night Color=none,none,Suspend/Resume Night Light
 Toggle Window Raise/Lower=none,,Toggle Window Raise/Lower
-Walk Through Windows=Alt+Tab,Alt+Tab,Walk Through Windows
-Walk Through Windows (Reverse)=Alt+Shift+Tab,Alt+Shift+Tab,Walk Through Windows (Reverse)
-Walk Through Windows Alternative=none,,Walk Through Windows Alternative
-Walk Through Windows Alternative (Reverse)=none,,Walk Through Windows Alternative (Reverse)
-Walk Through Windows of Current Application=Alt+`,Alt+`,Walk Through Windows of Current Application
-Walk Through Windows of Current Application (Reverse)=Alt+~,Alt+~,Walk Through Windows of Current Application (Reverse)
-Walk Through Windows of Current Application Alternative=none,,Walk Through Windows of Current Application Alternative
-Walk Through Windows of Current Application Alternative (Reverse)=none,,Walk Through Windows of Current Application Alternative (Reverse)
+Walk Through Windows=Alt+Tab,Meta+Tab\tAlt+Tab,Walk Through Windows
+Walk Through Windows (Reverse)=Alt+Shift+Tab,Meta+Shift+Tab\tAlt+Shift+Tab,Walk Through Windows (Reverse)
+Walk Through Windows Alternative=none,none,Walk Through Windows Alternative
+Walk Through Windows Alternative (Reverse)=none,none,Walk Through Windows Alternative (Reverse)
+Walk Through Windows of Current Application=Alt+`,Meta+`\tAlt+`,Walk Through Windows of Current Application
+Walk Through Windows of Current Application (Reverse)=Alt+~,Meta+~\tAlt+~,Walk Through Windows of Current Application (Reverse)
+Walk Through Windows of Current Application Alternative=none,none,Walk Through Windows of Current Application Alternative
+Walk Through Windows of Current Application Alternative (Reverse)=none,none,Walk Through Windows of Current Application Alternative (Reverse)
 Window Above Other Windows=none,,Keep Window Above Others
 Window Below Other Windows=none,,Keep Window Below Others
 Window Close=Alt+F4\tMeta+Q,Alt+F4,Close Window
+Window Custom Quick Tile Bottom=none,,Custom Quick Tile Window to the Bottom
+Window Custom Quick Tile Left=none,,Custom Quick Tile Window to the Left
+Window Custom Quick Tile Right=none,,Custom Quick Tile Window to the Right
+Window Custom Quick Tile Top=none,,Custom Quick Tile Window to the Top
 Window Fullscreen=Meta+F,,Make Window Fullscreen
 Window Grow Horizontal=none,,Expand Window Horizontally
 Window Grow Vertical=none,,Expand Window Vertically
@@ -130,7 +142,7 @@ Window Maximize Vertical=none,,Maximize Window Vertically
 Window Minimize=none,Meta+PgDown,Minimize Window
 Window Move=none,,Move Window
 Window Move Center=none,,Move Window to the Center
-Window No Border=none,,Toggle Window Titlebar and Frame
+Window No Border=Meta+Shift+F,,Toggle Window Titlebar and Frame
 Window On All Desktops=none,,Keep Window on All Desktops
 Window One Desktop Down=none,Meta+Ctrl+Shift+Down,Window One Desktop Down
 Window One Desktop Up=none,Meta+Ctrl+Shift+Up,Window One Desktop Up
@@ -140,22 +152,22 @@ Window One Screen Down=none,,Move Window One Screen Down
 Window One Screen Up=none,,Move Window One Screen Up
 Window One Screen to the Left=none,,Move Window One Screen to the Left
 Window One Screen to the Right=none,,Move Window One Screen to the Right
-Window Operations Menu=Alt+F3,Alt+F3,Window Operations Menu
+Window Operations Menu=Alt+F3,Alt+F3,Window Menu
 Window Pack Down=none,,Move Window Down
 Window Pack Left=none,,Move Window Left
 Window Pack Right=none,,Move Window Right
 Window Pack Up=none,,Move Window Up
-Window Quick Tile Bottom=none,Meta+Down,Quick Tile Window to the Bottom
+Window Quick Tile Bottom=Meta+Down,Meta+Down,Quick Tile Window to the Bottom
 Window Quick Tile Bottom Left=none,,Quick Tile Window to the Bottom Left
 Window Quick Tile Bottom Right=none,,Quick Tile Window to the Bottom Right
-Window Quick Tile Left=none,Meta+Left,Quick Tile Window to the Left
-Window Quick Tile Right=none,Meta+Right,Quick Tile Window to the Right
-Window Quick Tile Top=none,Meta+Up,Quick Tile Window to the Top
+Window Quick Tile Left=Meta+Left,Meta+Left,Quick Tile Window to the Left
+Window Quick Tile Right=Meta+Right,Meta+Right,Quick Tile Window to the Right
+Window Quick Tile Top=Meta+Up,Meta+Up,Quick Tile Window to the Top
 Window Quick Tile Top Left=none,,Quick Tile Window to the Top Left
 Window Quick Tile Top Right=none,,Quick Tile Window to the Top Right
 Window Raise=none,,Raise Window
 Window Resize=none,,Resize Window
-Window Shade=none,,Shade Window
+Window Shade=none,none,Shade Window
 Window Shrink Horizontal=none,,Shrink Window Horizontally
 Window Shrink Vertical=none,,Shrink Window Vertically
 Window to Desktop 1=Meta+!,,Window to Desktop 1
@@ -191,6 +203,7 @@ Window to Screen 5=none,,Move Window to Screen 5
 Window to Screen 6=none,,Move Window to Screen 6
 Window to Screen 7=none,,Move Window to Screen 7
 _k_friendly_name=KWin
+disableInputCapture=Meta+Shift+Esc,Meta+Shift+Esc,Disable Active Input Capture
 view_actual_size=none,Meta+0,Zoom to Actual Size
 view_zoom_in=Meta++\tMeta+=,Meta++\tMeta+=,Zoom In
 view_zoom_out=Meta+-,Meta+-,Zoom Out
@@ -205,6 +218,60 @@ playmedia=none,,Play media playback
 playpausemedia=Media Play,Media Play,Play/Pause media playback
 previousmedia=Media Previous,Media Previous,Media playback previous
 stopmedia=Media Stop,Media Stop,Stop media playback
+
+[org.chromium.Chromium]
+0A2EA3E19F626B6E39E40E5FD7150839-add-link=none,none,Send the current page URL to Karakeep.
+0FCE543DDE332F41848BFC04A835350C-switch_to_previous_active_tab=none,none,Switches to previously active tab
+11A245AB6BBE78D3909910B91FC1BB2C-SkipScripts=none,none,Reload page without userscripts
+11A245AB6BBE78D3909910B91FC1BB2C-dashboard=none,none,Open Dashboard
+11A245AB6BBE78D3909910B91FC1BB2C-newScript=none,none,Create a new script
+11A245AB6BBE78D3909910B91FC1BB2C-settings=none,none,Settings
+11A245AB6BBE78D3909910B91FC1BB2C-toggleInjection=none,none,Toggle userscript injection
+11A245AB6BBE78D3909910B91FC1BB2C-updateScripts=none,none,Update all scripts
+11A245AB6BBE78D3909910B91FC1BB2C-updateScriptsInTab=none,none,Update current tab's scripts
+16219900F2033E3C622ABF1AE3FD66DF-custom-command-0=none,none,Custom shortcut #1
+16219900F2033E3C622ABF1AE3FD66DF-custom-command-1=none,none,Custom shortcut #2
+16219900F2033E3C622ABF1AE3FD66DF-custom-command-2=none,none,Custom shortcut #3
+16219900F2033E3C622ABF1AE3FD66DF-custom-command-3=none,none,Custom shortcut #4
+16219900F2033E3C622ABF1AE3FD66DF-custom-command-4=none,none,Custom shortcut #5
+16219900F2033E3C622ABF1AE3FD66DF-custom-command-5=none,none,Custom shortcut #6
+16219900F2033E3C622ABF1AE3FD66DF-custom-command-6=none,none,Custom shortcut #7
+16219900F2033E3C622ABF1AE3FD66DF-custom-command-7=none,none,Custom shortcut #8
+16219900F2033E3C622ABF1AE3FD66DF-custom-command-8=none,none,Custom shortcut #9
+16219900F2033E3C622ABF1AE3FD66DF-custom-command-9=none,none,Custom shortcut #10
+16219900F2033E3C622ABF1AE3FD66DF-save-all-tabs=none,none,Save all tabs
+16219900F2033E3C622ABF1AE3FD66DF-save-selected-tabs=none,none,Save the selected tabs or their selected contents
+4A9DF1932C2BA550CF28EB9BB28C108A-choose_credential_fields=none,none,Choose Custom Login Fields
+4A9DF1932C2BA550CF28EB9BB28C108A-fill_password=none,none,Fill Password Only
+4A9DF1932C2BA550CF28EB9BB28C108A-fill_totp=none,none,Fill TOTP
+4A9DF1932C2BA550CF28EB9BB28C108A-fill_username_password=none,none,Fill Username and Password
+4A9DF1932C2BA550CF28EB9BB28C108A-redetect_fields=none,none,Redetect login fields
+4A9DF1932C2BA550CF28EB9BB28C108A-reload_extension=none,none,Reload
+4A9DF1932C2BA550CF28EB9BB28C108A-request_autotype=none,none,Request Global Auto-Type
+4A9DF1932C2BA550CF28EB9BB28C108A-retrive_credentials_forced=none,none,Reopen database
+4A9DF1932C2BA550CF28EB9BB28C108A-save_credentials=none,none,Save Credentials
+4A9DF1932C2BA550CF28EB9BB28C108A-show_password_generator=none,none,Show Password Generator
+7C4DE7931CE6DE5986699CE981D37078-close=none,none,Close Tab
+7C4DE7931CE6DE5986699CE981D37078-discard-lefts=none,none,Discard Tabs to the Left
+7C4DE7931CE6DE5986699CE981D37078-discard-other-windows=none,none,Discard Tabs in Other Windows
+7C4DE7931CE6DE5986699CE981D37078-discard-rights=none,none,Discard Tabs to the Right
+7C4DE7931CE6DE5986699CE981D37078-discard-tab=none,none,Discard Tab
+7C4DE7931CE6DE5986699CE981D37078-discard-tabs=none,none,Discard All Other Tabs
+7C4DE7931CE6DE5986699CE981D37078-discard-tree=none,none,Discard Tab Group
+7C4DE7931CE6DE5986699CE981D37078-discard-window=none,none,Discard Other Tabs in This Window
+7C4DE7931CE6DE5986699CE981D37078-move-next=none,none,Go to the Right Tab
+7C4DE7931CE6DE5986699CE981D37078-move-previous=none,none,Go to the Left Tab
+9F41E0F72AA6AE1B5E0C5DA6BA83D3E8-openManage=none,none,Manage
+9F41E0F72AA6AE1B5E0C5DA6BA83D3E8-reload=none,none,Reload
+9F41E0F72AA6AE1B5E0C5DA6BA83D3E8-styleDisableAll=none,none,Turn all styles off
+E45EEF54912E0A9DB0E595E6FA157948-launch-element-picker=none,none,Enter element picker mode
+E45EEF54912E0A9DB0E595E6FA157948-launch-element-zapper=none,none,Enter element zapper mode
+E45EEF54912E0A9DB0E595E6FA157948-launch-logger=none,none,Open the logger
+E45EEF54912E0A9DB0E595E6FA157948-open-dashboard=none,none,Open the dashboard
+E45EEF54912E0A9DB0E595E6FA157948-relax-blocking-mode=none,none,Relax blocking mode
+E45EEF54912E0A9DB0E595E6FA157948-toggle-cosmetic-filtering=none,none,Toggle cosmetic filtering
+E45EEF54912E0A9DB0E595E6FA157948-toggle-javascript=none,none,Toggle JavaScript
+_k_friendly_name=org.chromium.Chromium
 
 [org_kde_powerdevil]
 Decrease Keyboard Brightness=Keyboard Brightness Down,Keyboard Brightness Down,Decrease Keyboard Brightness
@@ -223,10 +290,11 @@ _k_friendly_name=Power Management
 powerProfile=Battery\tMeta+B,Battery\tMeta+B,Switch Power Profile
 
 [plasmashell]
+Slideshow Wallpaper Next Image=none,,Next Wallpaper Image
 _k_friendly_name=plasmashell
 activate application launcher=Meta,Meta\tAlt+F1,Activate Application Launcher
 activate task manager entry 1=none,Meta+1,Activate Task Manager Entry 1
-activate task manager entry 10=none,Meta+0,Activate Task Manager Entry 10
+activate task manager entry 10=none,,Activate Task Manager Entry 10
 activate task manager entry 2=none,Meta+2,Activate Task Manager Entry 2
 activate task manager entry 3=none,Meta+3,Activate Task Manager Entry 3
 activate task manager entry 4=none,Meta+4,Activate Task Manager Entry 4
@@ -241,23 +309,23 @@ clipboard_action=none,Meta+Ctrl+X,Automatic Action Popup Menu
 cycle-panels=none,Meta+Alt+P,Move keyboard focus between panels
 cycleNextAction=none,,Next History Item
 cyclePrevAction=none,,Previous History Item
+edit_clipboard=none,,Edit Contents…
 manage activities=none,Meta+Q,Show Activity Switcher
 next activity=none,none,Walk through activities
 previous activity=none,none,Walk through activities (Reverse)
-repeat_action=none,Meta+Ctrl+R,Manually Invoke Action on Current Clipboard
+repeat_action=none,,Manually Invoke Action on Current Clipboard
 show dashboard=none,Ctrl+F12,Show Desktop
 show-barcode=Meta+Shift+B,,Show Barcode…
 show-on-mouse-pos=Meta+V,Meta+V,Show Clipboard Items at Mouse Position
-stop current activity=none,Meta+S,Stop Current Activity
 switch to next activity=none,,Switch to Next Activity
 switch to previous activity=none,,Switch to Previous Activity
 toggle do not disturb=none,,Toggle do not disturb
 
+[services][kitty.desktop]
+_launch=Meta+Return
+
 [services][org.kde.dolphin.desktop]
 _launch=Meta+E\tMeta+Shift+E
-
-[services][org.kde.konsole.desktop]
-_launch=Ctrl+Alt+T\tMeta+Return
 
 [services][org.kde.krunner.desktop]
 RunClipboard=none
@@ -271,3 +339,6 @@ _launch=Meta+.
 
 [services][org.kde.spectacle.desktop]
 _launch=Print
+
+[services][org.kde.touchpadshortcuts.desktop]
+ToggleTouchpad=Touchpad Toggle\tMeta+Ctrl+Zenkaku Hankaku
