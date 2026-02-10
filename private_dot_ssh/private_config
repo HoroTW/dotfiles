@@ -276,6 +276,19 @@ Host tinyx.nhr.fau.de tinyx
 	ForwardX11Trusted no
 
 # needed only for Tier3-Grundversorgung
+Host worker-direct-via-vpn
+	HostName worker.fau.de
+	User iwi1113h
+	# ProxyJump csnhr.nhr.fau.de
+	IdentityFile ~/.ssh/fau_hpc/id_ed25519_fau_hpc
+	IdentitiesOnly yes
+	PasswordAuthentication no
+	PreferredAuthentications publickey
+	ForwardX11 no
+	ForwardX11Trusted no
+
+
+# needed only for Tier3-Grundversorgung
 Host woody.nhr.fau.de woody
 	HostName woody.nhr.fau.de
 	User iwi1113h
