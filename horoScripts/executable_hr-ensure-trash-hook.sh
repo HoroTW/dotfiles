@@ -1,5 +1,5 @@
 #!/bin/bash
-# ensure-trash-hook.sh
+# hr-ensure-trash-hook.sh
 # Ensures rm is replaced with trash-put system-wide via pacman hook
 
 set -euo pipefail
