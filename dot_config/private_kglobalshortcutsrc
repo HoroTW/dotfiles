@@ -274,6 +274,7 @@ stopmedia=Media Stop,Media Stop,Stop media playback
 9F41E0F72AA6AE1B5E0C5DA6BA83D3E8-openManage=none,none,Manage
 9F41E0F72AA6AE1B5E0C5DA6BA83D3E8-reload=none,none,Reload
 9F41E0F72AA6AE1B5E0C5DA6BA83D3E8-styleDisableAll=none,none,Turn all styles off
+B81318E67D064C58DD002B1309400517-=,none,Electron shortcut\s
 E45EEF54912E0A9DB0E595E6FA157948-launch-element-picker=none,none,Enter element picker mode
 E45EEF54912E0A9DB0E595E6FA157948-launch-element-zapper=none,none,Enter element zapper mode
 E45EEF54912E0A9DB0E595E6FA157948-launch-logger=none,none,Open the logger
