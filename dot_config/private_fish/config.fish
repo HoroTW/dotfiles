@@ -25,6 +25,8 @@ alias x='extract'
 alias f='fd -HIi'
 alias ff='fd -HIi --hyperlink=always'
 
+alias diff_dir_change='diff (ls . -lah --color always | psub) (read; ls . -lah --color always | psub)'
+
 alias gpte='gh copilot explain'
 alias gpts='gh copilot suggest'
 
@@ -37,6 +39,9 @@ alias git-tree='git log --graph --oneline --decorate --all --date=short --pretty
 
 alias nixm='vim /home/horo/packages.nix && nix-env -irf /home/horo/packages.nix # Nix management'
 alias nixcg='nix-collect-garbage # Nix collect garbage'
+
+alias mv='uu-mv -i --progress'
+alias cp='uu-cp -i --progress'
 
 function ssh --wraps ssh
   if test $TERM = xterm-kitty
