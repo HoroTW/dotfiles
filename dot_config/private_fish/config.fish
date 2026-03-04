@@ -42,6 +42,7 @@ alias nixcg='nix-collect-garbage # Nix collect garbage'
 
 alias mv='uu-mv -i --progress'
 alias cp='uu-cp -i --progress'
+alias rm='trash-put'
 
 function ssh --wraps ssh
   if test $TERM = xterm-kitty
