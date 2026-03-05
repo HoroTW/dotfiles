@@ -51,8 +51,9 @@ function ssh --wraps ssh
   command ssh $argv
 end
 
-set -x PATH $PATH /home/horo/Applications /home/horo/.cache/yay/distrobox/pkg/distrobox/usr/bin
-set -x PATH $HOME/.local/bin $PATH
-set -x PATH $HOME/.flatpak/bin $PATH
-set -x PATH $HOME/.local/bin:$PATH
-set -x PATH $HOME/horoScripts $PATH
+fish_add_path /home/horo/Applications
+fish_add_path /home/horo/.cache/yay/distrobox/pkg/distrobox/usr/bin
+fish_add_path $HOME/.flatpak/bin
+fish_add_path $HOME/.local/bin
+fish_add_path $HOME/horoScripts
+
