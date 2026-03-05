@@ -52,6 +52,7 @@ function ssh --wraps ssh
 end
 
 set -x PATH $PATH /home/horo/Applications /home/horo/.cache/yay/distrobox/pkg/distrobox/usr/bin
+set -x PATH $HOME/.local/bin $PATH
 set -x PATH $HOME/.flatpak/bin $PATH
 set -x PATH $HOME/.local/bin:$PATH
 set -x PATH $HOME/horoScripts $PATH
