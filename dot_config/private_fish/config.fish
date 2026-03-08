@@ -44,6 +44,8 @@ alias mv='uu-mv -i --progress'
 alias cp='uu-cp -i --progress'
 alias rm='trash-put'
 
+alias chezmoiac='chezmoi git -- commit -e -m "$(chezmoi generate git-commit-message)"'
+
 function ssh --wraps ssh
   if test $TERM = xterm-kitty
     set --function --export TERM xterm-256color
