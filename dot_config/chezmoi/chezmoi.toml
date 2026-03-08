@@ -10,17 +10,18 @@ encryption = "age"
 
 [diff]
     command = "meld"
-    args = ["--diff", "{{ .Destination }}", "{{ .Target }}"]
+    args = [
+            "{{ .Destination }}", "--label=\"(File in ~) DESTINATION ({{ .Destination }})\"", 
+            "{{ .Target }}", "--label=\"(Virtual File) TARGET (Resulting File (after template eval of SOURCE))\""
+    ]
 
 [merge]
     command = "meld"
-    args = ["{{ .Source }}", "{{ .Target }}", "{{ .Destination }}", "--output", "{{ .Destination }}"]
-
-    #args = ["--auto-merge", "{{ .Destination }}", "{{ .Source }}", "{{ .Target }}", "--output", "{{ .Destination }}"]
-
-    #command = "code"
-    #args = ["--wait", "--new-window", "--diff", "{{ .Destination }}", "{{ .Source }}"]
-    #args = [".Source:{{ .Source }}", ".Destination:{{ .Destination }}", ".Target:{{ .Target }}"]
+    args = [
+        "{{ .Destination }}", "--label=\"(File in ~) DESTINATION ({{ .Destination }})\"",
+        "{{ .Source }}", "--label=\"SOURCE (chezmoi git repo) ({{ .Source }})\"", 
+        "{{ .Target }}", "--label=\"(Virtual File) TARGET (Resulting File (after template eval of SOURCE))\""
+    ]
 
 [keepassxc]
     database = "/home/horo/Synced/keepass/chezmoi_secrets.kdbx"
