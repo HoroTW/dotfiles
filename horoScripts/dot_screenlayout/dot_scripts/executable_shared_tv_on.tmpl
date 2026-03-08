@@ -2,17 +2,28 @@
 
 
 timeout 8 curl --request POST \
-  --url https://ass.horotw.com/api/services/switch/turn_on \
+  --url https://ass.horotw.com/api/services/input_button/press \
   --header 'Authorization: Bearer {{ keepassxcAttribute "hass - homeassistant" "Aurora Token" }}' \
   --header 'Content-Type: application/json' \
-  --data '{"entity_id": "switch.living_room_tv"}' \
+  --data '{"entity_id": "button.esphome_web_671528_projector_power"}' \
 & (sleep 0.5 && timeout 4 curl --request POST \
-  --url https://ass.horotw.com/api/services/switch/turn_on \
+  --url https://ass.horotw.com/api/services/input_button/press \
   --header 'Authorization: Bearer {{ keepassxcAttribute "hass - homeassistant" "Aurora Token" }}' \
   --header 'Content-Type: application/json' \
-  --data '{"entity_id": "switch.living_room_tv"}' ) \
-& (sleep 1 && timeout 4 curl --request POST \
-  --url https://ass.horotw.com/api/services/switch/turn_on \
-  --header 'Authorization: Bearer {{ keepassxcAttribute "hass - homeassistant" "Aurora Token" }}' \
-  --header 'Content-Type: application/json' \
-  --data '{"entity_id": "switch.living_room_tv"}' )
+  --data '{"entity_id": "button.esphome_web_671528_avr_power"}' )
+
+# timeout 8 curl --request POST \
+#   --url https://ass.horotw.com/api/services/switch/turn_on \
+#   --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIyZjdkNzY5YzE1ZWE0NTg1OGY5MzgwYThhOWE0ZWNkYiIsImlhdCI6MTY3MjE0NjY3NiwiZXhwIjoxOTg3NTA2Njc2fQ.P9-XbQeidebmm6A-z2wWVekxccyg3nZLhmUu6mymUsU' \
+#   --header 'Content-Type: application/json' \
+#   --data '{"entity_id": "switch.living_room_tv"}'
+# & (sleep 0.5 && timeout 4 curl --request POST \
+#   --url https://ass.horotw.com/api/services/switch/turn_on \
+#   --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIyZjdkNzY5YzE1ZWE0NTg1OGY5MzgwYThhOWE0ZWNkYiIsImlhdCI6MTY3MjE0NjY3NiwiZXhwIjoxOTg3NTA2Njc2fQ.P9-XbQeidebmm6A-z2wWVekxccyg3nZLhmUu6mymUsU' \
+#   --header 'Content-Type: application/json' \
+#   --data '{"entity_id": "switch.living_room_tv"}' ) \
+# & (sleep 1 && timeout 4 curl --request POST \
+#   --url https://ass.horotw.com/api/services/switch/turn_on \
+#   --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIyZjdkNzY5YzE1ZWE0NTg1OGY5MzgwYThhOWE0ZWNkYiIsImlhdCI6MTY3MjE0NjY3NiwiZXhwIjoxOTg3NTA2Njc2fQ.P9-XbQeidebmm6A-z2wWVekxccyg3nZLhmUu6mymUsU' \
+#   --header 'Content-Type: application/json' \
+#   --data '{"entity_id": "switch.living_room_tv"}' )
