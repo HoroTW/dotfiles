@@ -11,9 +11,9 @@
   #git
   #htop
   pkgs.cmatrix
-  pkgs.brave
-  unstable.rustdesk
-  unstable.avidemux
+  #pkgs.brave
+  #unstable.rustdesk
+  #unstable.avidemux
 
   #pkgs.orca-slicer
   #unstable.onlyoffice-bin
@@ -24,15 +24,15 @@
   unstable.stellarium
   unstable.anydesk
   unstable.bruno
-  unstable.betterbird
-  unstable.nuclear
-  unstable.piper-tts
+  #unstable.betterbird
+  #unstable.nuclear
+  #unstable.piper-tts
 
   # needed for some apps (like stellarium) 
-  nixgl.auto.nixGLDefault
+  #nixgl.auto.nixGLDefault
   #nixgl.auto.nixVulkanNvidia
 
-  unstable.nomacs
+  #unstable.nomacs
 
   #unstable.nuclear
   #headset # youtube listening app
