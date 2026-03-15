@@ -291,6 +291,7 @@ Host worker-direct-via-vpn
 	HostName worker.fau.de
 	User iwi1113h
 	# ProxyJump csnhr.nhr.fau.de
+	RemoteCommand "./enter-environment-on-scratchssd-on-interactive-gpu-worker.sh"
 	IdentityFile ~/.ssh/fau_hpc/id_ed25519_fau_hpc
 	IdentitiesOnly yes
 	PasswordAuthentication no
