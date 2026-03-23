@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+sudo pkill ydotoold 2>/dev/null
+flatpak kill net.mkiol.SpeechNote 2>/dev/null
+sudo ydotoold -p /tmp/.ydotool_socket -P 660 &
+sleep 1.5
+sudo chown horo:input /tmp/.ydotool_socket
+flatpak run net.mkiol.SpeechNote & disown
