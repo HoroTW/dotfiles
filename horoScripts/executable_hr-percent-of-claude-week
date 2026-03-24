@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+now=$(date +%s%3N)
+target=$(date -d 'last thursday 23:00' +%s%3N)
+
+seconds=$((now - target))
+week=604800
+
+# Integer math → scale by 10000000 to get 5 decimals precision
+percent=$(( 10000000 * seconds / week ))
+
+# Print with decimal point inserted
+printf "%d.%05d %%\n" $((percent / 100000000)) $((percent % 100000000))
+
+#echo hi
+#echo -ne $(math -s10 "0.1 * (($(date +%s%3N) - $(date -d 'last thursday 23:00' +%s%3N)) / 604800)")\%\\r # percent since claude week start
+

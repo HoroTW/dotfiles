@@ -53,9 +53,14 @@ function ssh --wraps ssh
   command ssh $argv
 end
 
+set -gx SSH_ASKPASS /usr/bin/ksshaskpass
+set -gx SSH_ASKPASS_REQUIRE prefer
+
 fish_add_path /home/horo/Applications
 fish_add_path /home/horo/.cache/yay/distrobox/pkg/distrobox/usr/bin
 fish_add_path $HOME/.flatpak/bin
-fish_add_path $HOME/.local/bin
 fish_add_path $HOME/horoScripts
+fish_add_path $HOME/.local/bin
+
+eval (ssh-agent -c)
 
