@@ -1,13 +1,49 @@
 #!/usr/bin/env bash
-echo params $@
-echo start downmixing
+
+echo "params: $*"
+echo "start downmixing"
 
 filepath="$1"
-filename=$(basename "$filepath")
+
+filename="$(basename "$filepath")"
 extension="${filename##*.}"
 filename="${filename%.*}"
-directory=$(dirname "$filepath")
+directory="$(dirname "$filepath")"
 
-ffmpeg -i "$filepath" -filter_complex "[0:a:0][0:a:1]amerge=inputs=2[a]" -map 0:v -map "[a]" -c:v copy -c:a aac "${directory}/${filename}_downmixed.${extension}"
-echo done
+echo "Filepath: $filepath"
 
+
+
+
+
+audio_count=$(ffprobe -v error -select_streams a \
+  -show_entries stream=index -of csv=p=0 "$filepath" | wc -l)
+
+inputs=""
+for ((i=0; i<audio_count; i++)); do
+  inputs+="[0:a:$i]"
+done
+
+read -rp "Compress video? (y/N): " compress
+
+
+if [[ "$compress" =~ ^[Yy]$ ]]; then
+  echo "→ Compressing + downmixing"
+
+  ffmpeg -i "$filepath" \
+    -filter_complex "${inputs}amix=inputs=${audio_count}:duration=longest:normalize=1[a]" \
+    -map 0:v -map "[a]" \
+    -c:v libx264 -crf 21 -preset medium \
+    -c:a aac -ac 2 \
+    -movflags +faststart \
+    "${directory}/${filename}_compressed.mp4"
+else
+  echo "→ Downmix only (no video re-encode)"
+  ffmpeg -i "$filepath" \
+    -filter_complex "${inputs}amix=inputs=${audio_count}:duration=longest:normalize=1[a]" \
+    -map 0:v -map "[a]" \
+    -c:v copy -c:a aac -ac 2 \
+    "${directory}/${filename}_downmixed.${extension}"
+fi
+
+echo "done"
